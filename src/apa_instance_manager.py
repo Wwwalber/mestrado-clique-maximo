@@ -80,45 +80,6 @@ class APAInstanceManager:
         
         return self.instances_info[instance_name].copy()
     
-    def download_instance(self, instance_name: str, force: bool = False) -> Path:
-        """
-        Baixar arquivo DIMACS de uma instância.
-        
-        Args:
-            instance_name: Nome da instância
-            force: Forçar download mesmo se arquivo já existir
-            
-        Returns:
-            Caminho para o arquivo baixado
-        """
-        if instance_name not in self.instances_info:
-            raise ValueError(f"Instância '{instance_name}' não encontrada na lista APA")
-        
-        file_path = self.data_dir / f"{instance_name}.clq"
-        
-        if file_path.exists() and not force:
-            logger.info(f"Arquivo {instance_name}.clq já existe")
-            return file_path
-        
-        # URL do arquivo
-        url = f"{self.BASE_URL}/{instance_name}.clq"
-        
-        logger.info(f"Baixando {instance_name}.clq de {url}")
-        
-        try:
-            response = requests.get(url, timeout=30)
-            response.raise_for_status()
-            
-            with open(file_path, 'wb') as f:
-                f.write(response.content)
-            
-            logger.info(f"Download concluído: {file_path}")
-            return file_path
-            
-        except requests.RequestException as e:
-            logger.error(f"Erro ao baixar {instance_name}: {e}")
-            raise
-    
     def download_instance(self, instance_name: str) -> bool:
         """
         Baixar uma instância específica do repositório DIMACS.
@@ -133,8 +94,19 @@ class APAInstanceManager:
             logger.error(f"Instância {instance_name} não encontrada na lista APA")
             return False
         
-        url = f"{self.BASE_URL}/{instance_name}.clq"
+        # Buscar URL correto no CSV
+        instance_row = self.instances_df[self.instances_df['Instance'] == instance_name]
+        if instance_row.empty:
+            logger.error(f"URL não encontrado para {instance_name}")
+            return False
+        
+        url = instance_row.iloc[0]['link']
         file_path = self.data_dir / f"{instance_name}.clq"
+        
+        # Verificar se já existe
+        if file_path.exists():
+            logger.info(f"Arquivo {instance_name}.clq já existe")
+            return True
         
         try:
             logger.info(f"Baixando {instance_name} de {url}")
@@ -314,24 +286,7 @@ class APAInstanceManager:
         
         return downloaded
     
-    def download_all_instances(self) -> int:
-        """
-        Baixar todas as instâncias da atividade APA.
-        
-        Returns:
-            Número de instâncias baixadas com sucesso
-        """
-        instances = self.get_apa_instance_list()
-        success_count = 0
-        
-        logger.info(f"Iniciando download de {len(instances)} instâncias...")
-        
-        for instance_name in instances:
-            if self.download_instance(instance_name):
-                success_count += 1
-        
-        logger.info(f"Download concluído: {success_count}/{len(instances)} instâncias")
-        return success_count
+
     
     def print_summary(self):
         """Imprimir resumo das instâncias APA."""
@@ -373,7 +328,59 @@ class APAInstanceManager:
             Lista com nomes de todas as 38 instâncias
         """
         return self.instances_df['Instance'].tolist()
-
+    
+    def get_known_clique_size(self, instance_name: str) -> Optional[int]:
+        """
+        Obter tamanho do clique ótimo conhecido para uma instância.
+        
+        Args:
+            instance_name: Nome da instância
+            
+        Returns:
+            Tamanho do clique ótimo conhecido ou None se não conhecido
+        """
+        # Valores ótimos conhecidos das instâncias DIMACS
+        known_optima = {
+            'C125.9': 34,
+            'C250.9': 44, 
+            'C500.9': 57,
+            'C1000.9': 68,
+            'C2000.9': 80,
+            'C2000.5': 16,
+            'C4000.5': 18,
+            'DSJC500_5': 13,
+            'DSJC1000_5': 15,
+            'MANN_a27': 126,
+            'MANN_a45': 345,
+            'MANN_a81': 1100,
+            'brock200_2': 12,
+            'brock200_4': 17,
+            'brock400_2': 29,
+            'brock400_4': 33,
+            'brock800_2': 24,
+            'brock800_4': 26,
+            'gen200_p0.9_44': 44,
+            'gen200_p0.9_55': 55,
+            'gen400_p0.9_55': 55,
+            'gen400_p0.9_65': 65,
+            'gen400_p0.9_75': 75,
+            'hamming8-4': 16,
+            'hamming10-4': 40,
+            'keller4': 11,
+            'keller5': 27,
+            'keller6': 59,
+            'p_hat300-1': 8,
+            'p_hat300-2': 25,
+            'p_hat300-3': 36,
+            'p_hat700-1': 11,
+            'p_hat700-2': 44,
+            'p_hat700-3': 62,
+            'p_hat1500-1': 12,
+            'p_hat1500-2': 65,
+            'p_hat1500-3': 94
+        }
+        
+        return known_optima.get(instance_name)
 
 def main():
     """Função principal para demonstração."""
