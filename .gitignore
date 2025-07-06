@@ -132,6 +132,7 @@ venv-apa02
 /venv-apa0*
 env/
 .venv-clique
+venv-clique
 ENV/
 env.bak/
 venv.bak/

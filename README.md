@@ -4,10 +4,9 @@ Este projeto implementa o algoritmo CliSAT para a disciplina de **Análise e Pro
 
 ## 🎯 Objetivo da Atividade
 
-Implementar e avaliar o algoritmo CliSAT em instâncias específicas da base de dados DIMACS, focando em:
+Implementar o algoritmo CliSAT em instâncias específicas da base de dados DIMACS, focando em:
 - Análise de desempenho em diferentes tipos de grafos
 - Comparação com valores ótimos conhecidos
-- Estudo da eficiência do algoritmo em grafos de diferentes características
 
 ## 📁 Estrutura do Projeto
 
@@ -19,32 +18,10 @@ mestrado-clique-maximo/
 ├── run_apa.py              # Script principal para atividade APA
 ├── instances_apa.csv       # Lista das instâncias da atividade
 ├── examples.py             # Exemplos de uso
-├── test_clisat.py          # Testes unitários
 ├── requirements.txt        # Dependências Python
 ├── README.md              # Este arquivo
 ├── dimacs_data/           # Diretório para grafos DIMACS baixados
 └── benchmark_results/     # Resultados dos benchmarks
-```
-
-## 🚀 Instalação e Configuração
-
-### 1. Clonar o repositório
-```bash
-git clone <url-do-repositorio>
-cd mestrado-clique-maximo
-```
-
-### 2. Criar ambiente virtual
-```bash
-python -m venv venv-clique
-source venv-clique/bin/activate  # Linux/Mac
-# ou
-venv-clique\Scripts\activate     # Windows
-```
-
-### 3. Instalar dependências
-```bash
-pip install -r requirements.txt
 ```
 
 ## 📊 Instâncias da Atividade APA
@@ -109,19 +86,6 @@ python run_apa.py analyze benchmark_results/apa_benchmark_20250101_120000.json
 
 ### Exemplo de Execução Completa
 
-```bash
-# 1. Baixar todas as instâncias
-python run_apa.py download
-
-# 2. Executar benchmark completo com relatório
-python run_apa.py benchmark --time-limit 300 --generate-report
-
-# 3. Os resultados serão salvos em:
-#    - benchmark_results/apa_benchmark_YYYYMMDD_HHMMSS.json
-#    - benchmark_results/relatorio_apa.txt
-#    - benchmark_results/*.png (gráficos)
-```
-
 ### Uso Programático
 
 ```python
@@ -160,34 +124,6 @@ Para cada instância, o sistema coleta:
 
 - **Tamanho do clique encontrado**
 - **Tempo de execução**
-- **Gap em relação ao ótimo conhecido** (quando disponível)
-- **Taxa de otimalidade** (clique ótimo encontrado vs. tentativas)
-- **Estatísticas do solver** (chamadas SAT, nós explorados, etc.)
-
-### Valores Ótimos Conhecidos
-
-O sistema inclui os valores ótimos conhecidos para todas as 37 instâncias:
-
-| Instância     | Ótimo | Instância     | Ótimo | Instância     | Ótimo |
-|---------------|-------|---------------|-------|---------------|-------|
-| C125.9        | 34    | brock200_2    | 12    | gen200_p0.9_44| 44    |
-| C250.9        | 44    | brock200_4    | 17    | gen200_p0.9_55| 55    |
-| C500.9        | 57    | brock400_2    | 29    | hamming8-4    | 16    |
-| ... (dados completos no sistema) |
-
-### Categorias de Desempenho
-
-**Instâncias Pequenas (≤ 300 nós)**
-- Meta: Taxa de otimalidade > 80%
-- Tempo médio esperado: < 60s
-
-**Instâncias Médias (300-800 nós)**
-- Meta: Taxa de otimalidade > 60%
-- Tempo médio esperado: < 300s
-
-**Instâncias Grandes (> 800 nós)**
-- Meta: Gap médio < 20%
-- Análise de escalabilidade
 
 ## 🧮 Algoritmo CliSAT
 
@@ -231,56 +167,12 @@ def solve(self):
 
 - **Tamanho do clique encontrado**
 - **Tempo de execução**
-- **Número de chamadas SAT**
-- **Nós explorados no branch-and-bound**
-- **Reduções por preprocessing**
-- **Gap em relação à solução conhecida**
 
 ### Formatos de Saída
 
-1. **JSON**: Resultados completos estruturados
 2. **CSV**: Resumo tabular para análise
 3. **Relatório de texto**: Análise detalhada
-4. **Gráficos**: Visualizações automáticas
 
-### Gráficos Gerados
-
-- Tamanho do grafo vs Tempo de execução
-- Densidade vs Tamanho do clique
-- Distribuição dos gaps
-- Taxa de otimalidade por faixa de tamanho
-
-## 🧪 Execução dos Testes para APA
-
-### 1. Teste de Verificação (Instâncias Pequenas)
-
-```bash
-# Baixar e testar instâncias pequenas primeiro
-python run_apa.py download --max-size 300
-python run_apa.py benchmark --max-size 300 --time-limit 120 --generate-report
-```
-
-### 2. Benchmark Completo da Atividade
-
-```bash
-# Baixar todas as 37 instâncias
-python run_apa.py download
-
-# Executar benchmark completo (pode levar várias horas)
-python run_apa.py benchmark --time-limit 300 --generate-report
-```
-
-### 3. Análise por Categorias
-
-```bash
-# Testar apenas instâncias específicas por família
-python run_apa.py benchmark --instances C125.9 C250.9 C500.9 --time-limit 180
-
-# Analisar instâncias por densidade
-python run_apa.py test p_hat300-1  # Baixa densidade
-python run_apa.py test brock200_2  # Média densidade  
-python run_apa.py test MANN_a27    # Alta densidade
-```
 
 ## 📋 Exemplos Práticos para APA
 
@@ -302,85 +194,7 @@ print(f"Resultado: {clique_size} (ótimo conhecido: 34)")
 print(f"Gap: {(34 - clique_size) / 34 * 100:.1f}%")
 ```
 
-### Exemplo 2: Benchmark de Família Específica
-
-```python
-from apa_benchmark import APABenchmark
-
-benchmark = APABenchmark()
-
-# Testar todas as instâncias da família C
-c_family = ["C125.9", "C250.9", "C500.9", "C1000.9", "C2000.9"]
-results = benchmark.run_benchmark_suite(
-    instances=c_family,
-    time_limit=300.0
-)
-
-# Analisar escalabilidade
-for result in results:
-    print(f"{result['instance_name']}: "
-          f"{result['found_clique_size']} em {result['execution_time']:.1f}s")
-```
-
-### Exemplo 3: Comparação de Densidades
-
-```python
-# Instâncias com diferentes densidades
-instances_by_density = {
-    'Alta densidade (>0.8)': ['C125.9', 'gen200_p0.9_44', 'MANN_a27'],
-    'Média densidade (0.4-0.8)': ['brock200_2', 'keller4', 'brock200_4'],
-    'Baixa densidade (<0.4)': ['p_hat300-1', 'p_hat700-1', 'p_hat1500-1']
-}
-
-for category, instances in instances_by_density.items():
-    print(f"\n=== {category} ===")
-    results = benchmark.run_benchmark_suite(instances=instances)
-    # Análise específica por categoria...
-```
-
-## � Análise de Resultados
-
-### Saídas Geradas
-
-Após executar o benchmark, o sistema gera:
-
-1. **Arquivo JSON** (`apa_benchmark_YYYYMMDD_HHMMSS.json`)
-   - Resultados completos estruturados
-   - Todas as métricas coletadas
-   - Timestamps e configurações
-
-2. **Relatório de Texto** (`relatorio_apa.txt`)
-   - Resumo executivo
-   - Estatísticas gerais
-   - Top 5 melhores/piores resultados
-   - Análise por família de grafos
-
-3. **Gráficos de Análise** (arquivos PNG)
-   - `tempo_vs_tamanho.png`: Escalabilidade temporal
-   - `gap_vs_densidade.png`: Qualidade vs. estrutura
-   - `distribuicao_tempos.png`: Distribuição de performance
-   - `tempos_por_familia.png`: Análise por família
-
 ### Interpretação dos Resultados
-
-**Gap Percentual**: `(ótimo_conhecido - resultado_encontrado) / ótimo_conhecido * 100`
-- Gap = 0%: Solução ótima encontrada
-- Gap < 5%: Excelente qualidade
-- Gap < 15%: Boa qualidade
-- Gap > 20%: Necessita análise adicional
-
-**Análise Temporal**:
-- Verificar escalabilidade com o tamanho do grafo
-- Identificar famílias mais desafiadoras
-- Comparar com limites teóricos de complexidade
-
-## 🤝 Contribuindo
-
-1. Fork o projeto
-2. Crie uma branch para sua feature
-3. Commit suas mudanças
-4. Push para a branch
-5. Abra um Pull Request
 
 ## 📚 Referências
 
@@ -389,16 +203,3 @@ Após executar o benchmark, o sistema gera:
 - NetworkX Documentation: https://networkx.org/
 - PySAT Documentation: https://pysathq.github.io/
 
-## 📄 Licença
-
-Este projeto está licenciado sob a licença MIT - veja o arquivo LICENSE para detalhes.
-
-## 👥 Autores
-
-- **Seu Nome** - Implementação inicial - [seu-github](https://github.com/seu-usuario)
-
-## 🙏 Agradecimentos
-
-- Professores e orientadores do programa de mestrado
-- Comunidade científica pelos algoritmos e datasets
-- Desenvolvedores das bibliotecas utilizadas
