@@ -119,6 +119,38 @@ class APAInstanceManager:
             logger.error(f"Erro ao baixar {instance_name}: {e}")
             raise
     
+    def download_instance(self, instance_name: str) -> bool:
+        """
+        Baixar uma instância específica do repositório DIMACS.
+        
+        Args:
+            instance_name: Nome da instância
+            
+        Returns:
+            True se sucesso, False caso contrário
+        """
+        if instance_name not in self.instances_info:
+            logger.error(f"Instância {instance_name} não encontrada na lista APA")
+            return False
+        
+        url = f"{self.BASE_URL}/{instance_name}.clq"
+        file_path = self.data_dir / f"{instance_name}.clq"
+        
+        try:
+            logger.info(f"Baixando {instance_name} de {url}")
+            response = requests.get(url, timeout=30)
+            response.raise_for_status()
+            
+            with open(file_path, 'w') as f:
+                f.write(response.text)
+            
+            logger.info(f"Instância {instance_name} baixada com sucesso")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Erro ao baixar {instance_name}: {e}")
+            return False
+    
     def load_graph(self, instance_name: str, auto_download: bool = True) -> nx.Graph:
         """
         Carregar grafo de uma instância DIMACS.
@@ -140,12 +172,42 @@ class APAInstanceManager:
         
         return self._parse_dimacs_file(file_path)
     
-    def _parse_dimacs_file(self, file_path: Path) -> nx.Graph:
+    def load_instance(self, instance_name: str) -> Optional[nx.Graph]:
         """
-        Analisar arquivo DIMACS e criar grafo NetworkX.
+        Carregar uma instância específica como grafo NetworkX.
         
         Args:
-            file_path: Caminho para o arquivo DIMACS
+            instance_name: Nome da instância (ex: 'C125.9')
+            
+        Returns:
+            Grafo NetworkX ou None se erro
+        """
+        if instance_name not in self.instances_info:
+            logger.error(f"Instância {instance_name} não está na lista da atividade APA")
+            return None
+        
+        file_path = self.data_dir / f"{instance_name}.clq"
+        
+        # Baixar se não existir
+        if not file_path.exists():
+            logger.info(f"Baixando instância {instance_name}...")
+            if not self.download_instance(instance_name):
+                logger.error(f"Falha ao baixar {instance_name}")
+                return None
+        
+        # Carregar grafo
+        try:
+            return self._parse_dimacs_file(file_path)
+        except Exception as e:
+            logger.error(f"Erro ao carregar {instance_name}: {e}")
+            return None
+    
+    def _parse_dimacs_file(self, file_path: Path) -> nx.Graph:
+        """
+        Parsear arquivo DIMACS e criar grafo NetworkX.
+        
+        Args:
+            file_path: Caminho para o arquivo .clq
             
         Returns:
             Grafo NetworkX
@@ -156,21 +218,17 @@ class APAInstanceManager:
             for line in f:
                 line = line.strip()
                 
-                if line.startswith('c'):
-                    # Linha de comentário
-                    continue
-                elif line.startswith('p'):
-                    # Linha de problema: p edge <num_vertices> <num_edges>
+                if line.startswith('p edge'):
+                    # Linha de problema: p edge n m
                     parts = line.split()
-                    if len(parts) >= 3:
-                        num_vertices = int(parts[2])
-                        G.add_nodes_from(range(1, num_vertices + 1))
+                    n_vertices = int(parts[2])
+                    G.add_nodes_from(range(1, n_vertices + 1))
+                    
                 elif line.startswith('e'):
-                    # Linha de aresta: e <vertex1> <vertex2>
+                    # Linha de aresta: e u v
                     parts = line.split()
-                    if len(parts) >= 3:
-                        v1, v2 = int(parts[1]), int(parts[2])
-                        G.add_edge(v1, v2)
+                    u, v = int(parts[1]), int(parts[2])
+                    G.add_edge(u, v)
         
         return G
     
@@ -256,6 +314,25 @@ class APAInstanceManager:
         
         return downloaded
     
+    def download_all_instances(self) -> int:
+        """
+        Baixar todas as instâncias da atividade APA.
+        
+        Returns:
+            Número de instâncias baixadas com sucesso
+        """
+        instances = self.get_apa_instance_list()
+        success_count = 0
+        
+        logger.info(f"Iniciando download de {len(instances)} instâncias...")
+        
+        for instance_name in instances:
+            if self.download_instance(instance_name):
+                success_count += 1
+        
+        logger.info(f"Download concluído: {success_count}/{len(instances)} instâncias")
+        return success_count
+    
     def print_summary(self):
         """Imprimir resumo das instâncias APA."""
         stats_df = self.get_statistics()
@@ -287,6 +364,15 @@ class APAInstanceManager:
         for _, row in top5.iterrows():
             print(f"  {row['Instance']}: {row['Nodes']} nós, {row['Edges']:,} arestas, "
                   f"densidade {row['Density']:.3f}")
+    
+    def get_apa_instance_list(self) -> List[str]:
+        """
+        Obter lista completa de instâncias da atividade APA.
+        
+        Returns:
+            Lista com nomes de todas as 38 instâncias
+        """
+        return self.instances_df['Instance'].tolist()
 
 
 def main():
