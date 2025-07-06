@@ -14,7 +14,7 @@ from pathlib import Path
 # Adicionar o diretório atual ao path para importações
 sys.path.append(str(Path(__file__).parent))
 
-from clisat_algorithm import solve_maximum_clique_clisat, CliSATSolver
+from clisat_algortithmb import solve_maximum_clique_clisat, CliSAT
 from test_clisat import run_test_suite, generate_random_graph, generate_planted_clique_graph
 from examples import run_social_network_example, run_protein_interaction_example
 import networkx as nx
@@ -210,7 +210,7 @@ def main():
             print("branch-and-bound para resolver eficientemente o problema")
             print("do clique máximo em grafos.")
             print("\nPara mais informações, consulte:")
-            print("- clisat_algorithm.py: Implementação principal")
+            print("- clisat_algortithmb.py: Implementação principal")
             print("- test_clisat.py: Testes e comparações")
             print("- examples.py: Aplicações práticas")
     

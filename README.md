@@ -15,7 +15,7 @@ Implementar o algoritmo CliSAT em instâncias específicas da base de dados DIMA
 
 ```
 mestrado-clique-maximo/
-├── clisat_algorithm.py         # Implementação do algoritmo CliSAT (exato)
+├── clisat_algortithmb.py        # Implementação do algoritmo CliSAT (exato)
 ├── clique_heuristics.py        # Implementação da heurística gulosa
 ├── apa_instance_manager.py     # Gerenciador das instâncias DIMACS
 ├── apa_results_generator.py    # Gerador de resultados e tabelas
@@ -236,7 +236,7 @@ Data: Julho 2025
 
 ```
 mestrado-clique-maximo/
-├── clisat_algorithm.py      # Implementação principal do algoritmo CliSAT
+├── clisat_algortithmb.py    # Implementação principal do algoritmo CliSAT
 ├── apa_instance_manager.py  # Gerenciador das instâncias APA
 ├── apa_benchmark.py         # Sistema de benchmark para instâncias APA
 ├── run_apa.py              # Script principal para atividade APA
@@ -315,14 +315,14 @@ python run_apa.py analyze benchmark_results/apa_benchmark_20250101_120000.json
 ```python
 from apa_instance_manager import APAInstanceManager
 from apa_benchmark import APABenchmark
-from clisat_algorithm import CliSATSolver
+from clisat_algortithmb import CliSAT
 
 # 1. Carregar uma instância específica
 manager = APAInstanceManager()
 graph = manager.load_graph("C125.9")
 
 # 2. Executar CliSAT
-solver = CliSATSolver(graph, time_limit=300.0)
+solver = CliSAT(graph, time_limit=300.0)
 clique_nodes, clique_size = solver.solve()
 
 print(f"Clique máximo: {clique_size} vértices")
@@ -404,14 +404,14 @@ def solve(self):
 
 ```python
 from apa_instance_manager import APAInstanceManager
-from clisat_algorithm import CliSATSolver
+from clisat_algortithmb import CliSAT
 
 # Carregar instância pequena
 manager = APAInstanceManager()
 graph = manager.load_graph("C125.9")  # 125 nós, ótimo = 34
 
 # Executar CliSAT
-solver = CliSATSolver(graph, time_limit=120.0)
+solver = CliSAT(graph, time_limit=120.0)
 clique_nodes, clique_size = solver.solve()
 
 print(f"Resultado: {clique_size} (ótimo conhecido: 34)")

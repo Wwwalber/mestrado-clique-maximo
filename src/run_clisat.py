@@ -17,7 +17,7 @@ import logging
 
 from dimacs_loader import DIMACSLoader
 from benchmark_clisat import CliSATBenchmark
-from clisat_algorithm import CliSATSolver
+from clisat_algortithmb import CliSAT
 
 def setup_logging(verbose: bool = False):
     """Configurar sistema de logging."""

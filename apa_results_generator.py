@@ -27,7 +27,7 @@ import os
 from typing import Dict, List, Tuple, Optional
 import logging
 
-from clisat_algorithm import solve_maximum_clique_clisat
+from clisat_algortithmb import solve_maximum_clique_clisat
 from clique_heuristics import solve_maximum_clique_heuristic
 from apa_instance_manager import APAInstanceManager
 

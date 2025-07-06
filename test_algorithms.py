@@ -7,7 +7,7 @@ para validar a implementação antes de executar nos dados DIMACS.
 
 import networkx as nx
 import time
-from clisat_algorithm import solve_maximum_clique_clisat
+from clisat_algortithmb import solve_maximum_clique_clisat
 from clique_heuristics import solve_maximum_clique_heuristic
 
 

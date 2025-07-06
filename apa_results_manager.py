@@ -16,7 +16,7 @@ import logging
 import networkx as nx
 import pandas as pd
 
-from clisat_algorithm import CliSATSolver, solve_maximum_clique_clisat
+from clisat_algortithmb import CliSAT, solve_maximum_clique_clisat
 from clique_heuristics import CliqueHeuristics, solve_maximum_clique_heuristic
 from apa_instance_manager import APAInstanceManager
 
@@ -76,7 +76,7 @@ class APAResultsManager:
         start_time = time.time()
         try:
             # Executar CliSAT
-            solver = CliSATSolver(graph, time_limit=time_limit)
+            solver = CliSAT(graph, time_limit=time_limit)
             clique_nodes, clique_size = solver.solve()
             
             execution_time = time.time() - start_time

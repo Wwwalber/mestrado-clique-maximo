@@ -7,7 +7,7 @@ import networkx as nx
 import numpy as np
 import random
 from typing import List, Dict, Tuple
-from clisat_algorithm import solve_maximum_clique_clisat
+from clisat_algortithmb import solve_maximum_clique_clisat
 import json
 
 
