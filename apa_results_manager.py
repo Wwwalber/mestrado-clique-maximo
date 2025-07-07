@@ -17,7 +17,7 @@ import networkx as nx
 import pandas as pd
 
 from clisat_algortithmb import CliSAT, solve_maximum_clique_clisat
-from clique_heuristics import CliqueHeuristics, solve_maximum_clique_heuristic
+from clique_heuristics import solve_maximum_clique_heuristic
 from apa_instance_manager import APAInstanceManager
 
 logger = logging.getLogger(__name__)
@@ -129,14 +129,16 @@ class APAResultsManager:
         logger.info(f"Executando heurística {method} em {instance_name}...")
         
         try:
-            # Executar heurística
-            heuristics = CliqueHeuristics(graph)
-            
-            if method == 'best':
-                best_method, clique_nodes, clique_size, execution_time = heuristics.get_best_heuristic_result()
-                method_used = f"best({best_method})"
+            # Executar heurística GRASP (substituindo a antiga classe CliqueHeuristics)
+            if method == 'best' or method == 'grasp':
+                # Usar GRASP como a única heurística de alta qualidade
+                clique_nodes, clique_size, execution_time = solve_maximum_clique_heuristic(
+                    graph, alpha=0.3, max_iterations=100, time_limit=60.0
+                )
+                method_used = "grasp"
             else:
-                clique_nodes, clique_size, execution_time = solve_maximum_clique_heuristic(graph, method)
+                # Para compatibilidade com outros métodos, usar GRASP com parâmetros padrão
+                clique_nodes, clique_size, execution_time = solve_maximum_clique_heuristic(graph)
                 method_used = method
             
             success = True

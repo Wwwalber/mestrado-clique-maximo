@@ -1,151 +1,127 @@
 """
-Heurística Gulosa para o Problema do Clique Máximo - Atividade APA
+Heurística GRASP para o Problema do Clique Máximo - Atividade APA
 
-Este módulo implementa uma heurística gulosa baseada em grau para encontrar cliques
-de grande tamanho em grafos, complementando o algoritmo exato CliSAT.
+Este módulo implementa o algoritmo GRASP (Greedy Randomized Adaptive Search Procedure)
+para encontrar cliques de grande tamanho em grafos, complementando o algoritmo exato CliSAT.
 
 FUNDAMENTAÇÃO TEÓRICA:
-A heurística gulosa é um algoritmo clássico para o problema do clique máximo,
-amplamente estudada na literatura (Johnson & Trick, 1996; Bomze et al., 1999).
+O GRASP é uma metaheurística amplamente estudada na literatura para problemas de
+otimização combinatória, incluindo o clique máximo (Feo & Resende, 1995).
 
 ALGORITMO:
-1. Inicializa com o vértice de maior grau
-2. A cada iteração, seleciona o vértice de maior grau entre os candidatos válidos
-3. Um vértice é candidato se é adjacente a todos os vértices já no clique
-4. Remove vértices que não são adjacentes ao vértice selecionado
-5. Repete até não haver mais candidatos válidos
+1. Fase de Construção: Constrói solução usando critério guloso randomizado
+2. Fase de Busca Local: Melhora solução através de operadores de vizinhança
+3. Reinicialização: Repete o processo até critério de parada
 
-COMPLEXIDADE: O(n³) no pior caso, onde n é o número de vértices.
+COMPLEXIDADE: O(k × n³) onde k é o número de iterações e n é o número de vértices.
 
-GARANTIAS: A heurística gulosa não oferece garantia de aproximação constante
-para o problema do clique máximo, mas na prática produz soluções de boa qualidade.
+GARANTIAS: Heurística de alta qualidade com boa capacidade de escape de ótimos locais.
 
 REFERÊNCIAS:
-- Johnson, D. S., & Trick, M. A. (1996). Cliques, Coloring, and Satisfiability
-- Bomze, I. M., et al. (1999). The maximum clique problem. Handbook of combinatorial optimization
+- Feo, T.A., Resende, M.G.C. (1995). Greedy Randomized Adaptive Search Procedures
+- Pardalos, P.M., Xue, J. (1994). The maximum clique problem
 """
 
 import networkx as nx
-import numpy as np
-import random
 import time
-from typing import List, Set, Tuple, Dict
+from typing import List, Tuple
 import logging
+from grasp_maximum_clique import solve_maximum_clique_grasp, GRASPParameters
 
 logger = logging.getLogger(__name__)
 
 
-class GreedyCliqueHeuristic:
+class GRASPCliqueHeuristic:
     """
-    Implementação da heurística gulosa baseada em grau para o problema do clique máximo.
+    Implementação da heurística GRASP para o problema do clique máximo.
     
-    Esta é uma das heurísticas mais estudadas e utilizadas na literatura para o problema
-    do clique máximo. A estratégia gulosa seleciona a cada iteração o vértice de maior
-    grau entre os candidatos válidos (vértices adjacentes a todos no clique atual).
+    O GRASP (Greedy Randomized Adaptive Search Procedure) é uma metaheurística
+    que combina construção gulosa randomizada com busca local, sendo uma das
+    abordagens mais eficazes para o problema do clique máximo.
     
     VANTAGENS:
-    - Simplicidade de implementação e compreensão
-    - Tempo de execução relativamente baixo
-    - Boa performance empírica em muitos tipos de grafos
+    - Boa capacidade de escape de ótimos locais
+    - Balanceamento entre exploração e explotação
+    - Performance superior à heurística gulosa simples
+    - Flexibilidade através de parâmetros configuráveis
     
-    DESVANTAGENS:
-    - Não oferece garantia de aproximação
-    - Pode ficar presa em ótimos locais
-    - Performance dependente da estrutura do grafo
+    REFERÊNCIAS:
+    - Feo, T.A., Resende, M.G.C. (1995). Greedy Randomized Adaptive Search Procedures
+    - Pardalos, P.M., Xue, J. (1994). The maximum clique problem
     """
     
-    def __init__(self, graph: nx.Graph, seed: int = 42):
+    def __init__(self, graph: nx.Graph, 
+                 alpha: float = 0.3, 
+                 max_iterations: int = 100,
+                 time_limit: float = 60.0,
+                 seed: int = 42):
         """
-        Inicializar heurística gulosa para clique máximo.
+        Inicializar heurística GRASP para clique máximo.
         
         Args:
             graph: Grafo NetworkX de entrada
-            seed: Semente para reprodutibilidade (para quebra de empates aleatórios)
+            alpha: Parâmetro de aleatoriedade (0=guloso, 1=aleatório)
+            max_iterations: Número máximo de iterações
+            time_limit: Limite de tempo em segundos
+            seed: Semente para reprodutibilidade
         """
         self.graph = graph
-        self.nodes = list(graph.nodes())
-        self.n = len(self.nodes)
-        random.seed(seed)
-        np.random.seed(seed)
+        self.parameters = GRASPParameters(
+            alpha=alpha,
+            max_iterations=max_iterations,
+            time_limit=time_limit,
+            seed=seed,
+            verbose=False  # Silencioso para não interferir no benchmark
+        )
         
     def solve(self) -> Tuple[List, int, float]:
         """
-        Executar a heurística gulosa baseada em grau.
-        
-        ALGORITMO DETALHADO:
-        1. Calcula o grau de todos os vértices
-        2. Inicializa o clique vazio e conjunto de candidatos com todos os vértices
-        3. Enquanto houver candidatos válidos:
-           a) Entre os candidatos, seleciona o de maior grau efetivo
-           b) Adiciona o vértice selecionado ao clique
-           c) Remove da lista de candidatos todos os vértices não adjacentes ao selecionado
-        4. Retorna o clique encontrado
-        
-        CRITÉRIO DE DESEMPATE:
-        Em caso de empate no grau efetivo, utiliza o grau original do vértice no grafo.
+        Executar o algoritmo GRASP para encontrar um clique máximo.
         
         Returns:
             Tuple (lista_vértices_clique, tamanho_clique, tempo_execução_segundos)
         """
         start_time = time.time()
         
-        # Pré-calcular graus para critério de desempate
-        original_degrees = dict(self.graph.degree())
-        
-        # Inicializar estruturas
-        clique = []
-        candidates = set(self.nodes)
-        
-        while candidates:
-            # Calcular grau efetivo de cada candidato
-            # (número de vizinhos entre os candidatos restantes)
-            candidate_scores = []
+        try:
+            # Chamar a função GRASP com os parâmetros individuais
+            clique, size, exec_time = solve_maximum_clique_grasp(
+                graph=self.graph,
+                alpha=self.parameters.alpha,
+                max_iterations=self.parameters.max_iterations,
+                time_limit=self.parameters.time_limit,
+                seed=self.parameters.seed,
+                verbose=self.parameters.verbose
+            )
             
-            for v in candidates:
-                # Verificar se v é adjacente a todos no clique atual
-                if all(self.graph.has_edge(v, u) for u in clique):
-                    # Calcular grau efetivo: vizinhos em candidates
-                    effective_degree = sum(1 for u in candidates 
-                                         if u != v and self.graph.has_edge(v, u))
-                    
-                    # Usar grau original como critério de desempate
-                    candidate_scores.append((effective_degree, original_degrees[v], v))
+            # Converter conjunto para lista se necessário
+            if isinstance(clique, set):
+                clique = list(clique)
             
-            # Se não há candidatos válidos, terminar
-            if not candidate_scores:
-                break
+            return clique, size, exec_time
             
-            # Selecionar candidato com maior pontuação
-            # Ordenar por: (grau_efetivo, grau_original) em ordem decrescente
-            candidate_scores.sort(reverse=True)
-            chosen_vertex = candidate_scores[0][2]
-            
-            # Adicionar vértice escolhido ao clique
-            clique.append(chosen_vertex)
-            candidates.remove(chosen_vertex)
-            
-            # Remover da lista de candidatos todos os vértices
-            # que não são adjacentes ao vértice escolhido
-            non_adjacent = []
-            for v in candidates:
-                if not self.graph.has_edge(chosen_vertex, v):
-                    non_adjacent.append(v)
-            
-            for v in non_adjacent:
-                candidates.remove(v)
-        
-        execution_time = time.time() - start_time
-        return clique, len(clique), execution_time
+        except Exception as e:
+            logger.error(f"Erro na execução do GRASP: {e}")
+            # Retornar solução trivial em caso de erro
+            execution_time = time.time() - start_time
+            return [], 0, execution_time
 
-def solve_maximum_clique_heuristic(graph: nx.Graph) -> Tuple[List, int, float]:
+def solve_maximum_clique_heuristic(graph: nx.Graph, 
+                                   alpha: float = 0.3,
+                                   max_iterations: int = 100,
+                                   time_limit: float = 60.0) -> Tuple[List, int, float]:
     """
-    Função conveniente para resolver o problema do clique máximo usando heurística gulosa.
+    Função conveniente para resolver o problema do clique máximo usando GRASP.
     
-    Esta função implementa a heurística gulosa baseada em grau, que é uma das abordagens
-    mais clássicas e estudadas para o problema do clique máximo.
+    Esta função implementa a metaheurística GRASP, que é uma abordagem de alta
+    qualidade para o problema do clique máximo, combinando construção gulosa
+    randomizada com busca local.
     
     Args:
         graph: Grafo NetworkX de entrada
+        alpha: Parâmetro de aleatoriedade (0=guloso, 1=aleatório)
+        max_iterations: Número máximo de iterações GRASP
+        time_limit: Limite de tempo em segundos
         
     Returns:
         Tuple (lista_vértices_clique, tamanho_clique, tempo_execução_segundos)
@@ -156,15 +132,15 @@ def solve_maximum_clique_heuristic(graph: nx.Graph) -> Tuple[List, int, float]:
     >>> clique, size, time = solve_maximum_clique_heuristic(G)
     >>> print(f"Clique encontrado: {clique}, tamanho: {size}")
     """
-    heuristic = GreedyCliqueHeuristic(graph)
+    heuristic = GRASPCliqueHeuristic(graph, alpha, max_iterations, time_limit)
     return heuristic.solve()
 
 
 # Exemplo de uso e validação
 if __name__ == "__main__":
     # Criar um grafo de teste com clique conhecido
-    print("=== TESTE DA HEURÍSTICA GULOSA ===")
-    print("Referência: Johnson, D. S., & Trick, M. A. (1996)")
+    print("=== TESTE DA HEURÍSTICA GRASP ===")
+    print("Referência: Feo, T.A., Resende, M.G.C. (1995)")
     print()
     
     G = nx.Graph()
@@ -186,11 +162,13 @@ if __name__ == "__main__":
     print(f"- Clique ótimo conhecido: {sorted(clique_nodes)} (tamanho: {len(clique_nodes)})")
     print()
     
-    # Executar heurística
-    print("Executando heurística gulosa baseada em grau...")
-    clique_found, size_found, time_exec = solve_maximum_clique_heuristic(G)
+    # Executar heurística GRASP
+    print("Executando heurística GRASP...")
+    clique_found, size_found, time_exec = solve_maximum_clique_heuristic(
+        G, alpha=0.3, max_iterations=50, time_limit=30.0
+    )
     
-    print(f"Resultado da heurística:")
+    print(f"Resultado do GRASP:")
     print(f"- Clique encontrado: {sorted(clique_found)}")
     print(f"- Tamanho: {size_found}")
     print(f"- Tempo de execução: {time_exec:.6f} segundos")
@@ -205,9 +183,19 @@ if __name__ == "__main__":
         print(f"- Verificação: {'✓ Clique válido' if is_valid else '✗ Clique inválido'}")
     
     print()
-    print("=== ANÁLISE TEÓRICA ===")
-    print("Complexidade de tempo: O(n³)")
+    print("=== ANÁLISE TEÓRICA DO GRASP ===")
+    print("Complexidade de tempo: O(k × n³) onde k é o número de iterações")
     print("Complexidade de espaço: O(n)")
-    print("Garantia de aproximação: Nenhuma (problema NP-difícil)")
-    print("Vantagens: Simples, rápida, boa performance empírica")
-    print("Desvantagens: Pode ficar presa em ótimos locais")
+    print("Garantia de aproximação: Heurística de alta qualidade")
+    print("Vantagens: Escape de ótimos locais, configurável, boa performance")
+    print("Desvantagens: Mais complexo que heurística gulosa simples")
+    print()
+    
+    # Testar diferentes valores de alpha
+    print("=== TESTE DE DIFERENTES PARÂMETROS ===")
+    alphas = [0.0, 0.3, 0.7, 1.0]
+    for alpha in alphas:
+        clique, size, time_taken = solve_maximum_clique_heuristic(
+            G, alpha=alpha, max_iterations=20, time_limit=10.0
+        )
+        print(f"Alpha={alpha:.1f}: tamanho={size}, tempo={time_taken:.4f}s")
