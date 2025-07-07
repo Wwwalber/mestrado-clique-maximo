@@ -1,0 +1,4 @@
+Instance,Nodes,Edges,Exact_Size,Exact_Time,Exact_Status,Heuristic_Status,Heuristic_Size,Heuristic_Time,Quality,Speedup
+C125.9,125,6963,0,300,ERROR,COMPLETED,33,2.320506,0.0,129.3
+brock200_2,200,9876,0,300,ERROR,COMPLETED,11,0.80407,0.0,373.1
+gen200_p0.9_44,200,17910,0,300,ERROR,COMPLETED,37,4.951185,0.0,60.6

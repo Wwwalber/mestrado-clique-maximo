@@ -1,0 +1,20 @@
+=== RESUMO DOS RESULTADOS DA ATIVIDADE APA ===
+
+ALGORITMOS TESTADOS:
+1. Algoritmo Exato: CliSAT (SAT-based)
+2. Heurística: Gulosa baseada em grau
+
+ESTATÍSTICAS GERAIS:
+Total de instâncias: 3
+Algoritmo exato completou: 0
+Heurística completou: 3
+
+TEMPO DE EXECUÇÃO (Heurística):
+Média: 2.69192s
+Mediana: 2.320506s
+Máximo: 4.951185s
+
+SPEEDUP (Heurística vs Exato):
+Speedup médio: 187.7x
+Speedup mediano: 129.3x
+Speedup máximo: 373.1x
