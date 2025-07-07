@@ -767,7 +767,7 @@ class CliSAT:
 
 def solve_maximum_clique_clisat(graph: nx.Graph, time_limit: float = 3600.0, 
                                 log_interval: int = 1000, time_interval: float = 30.0,
-                                monitor_mode: str = 'log') -> Tuple[List, int]:
+                                monitor_mode: str = 'log') -> Tuple[List, int, float]:
     """
     Função conveniente para resolver o problema do clique máximo usando CliSAT.
     
@@ -779,16 +779,18 @@ def solve_maximum_clique_clisat(graph: nx.Graph, time_limit: float = 3600.0,
         monitor_mode: Modo de monitoramento ('log', 'realtime', 'both', 'silent')
         
     Returns:
-        Tuple contendo (lista_de_nós_do_clique, tamanho_do_clique)
+        Tuple contendo (lista_de_nós_do_clique, tamanho_do_clique, tempo_execução)
     """
+    start_time = time.time()
     solver = CliSAT(graph, time_limit, log_interval, time_interval, monitor_mode)
     clique, size = solver.solve()
+    execution_time = time.time() - start_time
     
     # Imprimir estatísticas se desejado
     if logger.isEnabledFor(logging.INFO):
         solver.print_solution_summary()
     
-    return clique, size
+    return clique, size, execution_time
 
 
 # Exemplo de uso e testes
