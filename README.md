@@ -1,32 +1,66 @@
-# CliSAT: Algoritmos para Clique Máximo - Atividade APA
+# 🎯 CliSAT & GRASP: Algoritmos para Clique Máximo - Atividade APA
 
-Este projeto implementa **dois algoritmos** para o problema do clique máximo como parte da atividade da disciplina **Análise e Projeto de Algoritmos** do mestrado:
+Este projeto implementa **dois algoritmos** para o problema do clique máximo como parte da atividade da disciplina **Análise e Projeto de Algoritmos** do mestrado.
 
-1. **Algoritmo Exato**: CliSAT (SAT-based exact algorithm)
-2. **Heurística**: Gulosa baseada em grau (Greedy degree-based heuristic)
+## 🔧 **Algoritmos Implementados**
 
-## 🎯 Objetivo da Atividade
+### 1. **CliSAT (Algoritmo Exato)**
+- **Localização**: `algorithms/clisat_exact.py`
+- **Tipo**: Algoritmo exato baseado em SAT (Boolean Satisfiability)
+- **Características**: 
+  - Garante encontrar a solução **ótima**
+  - Baseado no paper "CliSAT: A new exact algorithm for hard maximum clique problems"
+  - Implementa técnicas como ISEQ, SATCOL, filtros avançados
 
-Implementar o algoritmo CliSAT em instâncias específicas da base de dados DIMACS, focando em:
-- Análise de desempenho em diferentes tipos de grafos
-- Comparação com valores ótimos conhecidos
+### 2. **GRASP (Algoritmo Heurístico)**
+- **Localização**: `algorithms/grasp_heuristic.py`
+- **Tipo**: Metaheurística GRASP (Greedy Randomized Adaptive Search Procedure)
+- **Características**:
+  - Combina construção gulosa randomizada + busca local
+  - Boa qualidade de soluções em tempo controlado
+  - Flexível através de parâmetros configuráveis
 
-## 📁 Estrutura do Projeto
+## 📁 **Estrutura Organizada do Projeto**
 
 ```
 mestrado-clique-maximo/
-├── clisat_algortithmb.py        # Implementação do algoritmo CliSAT (exato)
-├── clique_heuristics.py        # Implementação da heurística gulosa
-├── apa_instance_manager.py     # Gerenciador das instâncias DIMACS
-├── apa_results_generator.py    # Gerador de resultados e tabelas
-├── run_apa_activity.py         # Script principal da atividade
-├── instances_apa.csv           # Lista das 38 instâncias da atividade
-├── venv-clique/               # Ambiente virtual Python
-├── dimacs_data/               # Dados DIMACS baixados
-├── benchmark_results/         # Resultados dos experimentos
-├── test_clisat.py             # Testes e benchmarks (legado)
-├── examples.py                # Exemplos práticos (legado)
-└── main.py                    # Script principal (legado)
+│
+├── 📁 algorithms/                    # ALGORITMOS PRINCIPAIS
+│   ├── clisat_exact.py              # Algoritmo CliSAT (exato)
+│   ├── grasp_heuristic.py           # Algoritmo GRASP (heurístico)
+│   └── algorithm_interface.py       # Interface comum
+│
+├── 📁 data/                         # GERENCIAMENTO DE DADOS
+│   ├── dimacs_loader.py             # Carregador DIMACS
+│   ├── instance_manager.py          # Gerenciador de instâncias
+│   └── graph_utils.py               # Utilitários para grafos
+│
+├── 📁 experiments/                  # EXPERIMENTOS E BENCHMARKS
+│   ├── results_generator.py         # Gerador de resultados
+│   └── results_analyzer.py          # Analisador de resultados
+│
+├── 📁 tests/                        # TODOS OS TESTES
+│   ├── test_algorithms.py           # Testes dos algoritmos
+│   ├── test_data_loading.py         # Testes de carregamento
+│   └── test_experiments.py          # Testes dos experimentos
+│
+├── 📁 scripts/                      # SCRIPTS DE EXECUÇÃO
+│   ├── run_apa_activity.py          # Script principal da atividade
+│   ├── quick_test.py                # Teste rápido
+│   └── benchmark_runner.py          # Executor de benchmarks
+│
+├── 📁 config/                       # CONFIGURAÇÕES
+│   ├── algorithm_params.py          # Parâmetros dos algoritmos
+│   └── logging_config.py            # Configuração de logs
+│
+├── 📁 data_files/                   # ARQUIVOS DE DADOS
+│   ├── dimacs/                      # Grafos DIMACS baixados
+│   ├── instances/                   # Lista de instâncias da atividade
+│   └── results/                     # Resultados dos experimentos
+│
+├── 📁 docs/                         # DOCUMENTAÇÃO
+├── requirements.txt                 # Dependências Python
+└── venv-clique/                     # Ambiente virtual
 ```
 
 ## 🚀 Como Executar

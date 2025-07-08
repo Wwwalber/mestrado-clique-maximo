@@ -19,7 +19,7 @@ A estratégia foi desenvolvida para executar o algoritmo CliSAT de forma eficien
 ### Grupo 1: Small Fast (7 instâncias)
 - **Instâncias**: C125.9, brock200_2, brock200_4, gen200_p0.9_44, gen200_p0.9_55, keller4, hamming8-4
 - **Características**: < 300 nós, execução rápida
-- **Tempo limite**: 5 minutos por instância
+- **Tempo limite**: 10 minutos por instância
 - **Tempo estimado**: 2-10 minutos por instância
 
 ### Grupo 2: Medium (12 instâncias)
@@ -195,7 +195,7 @@ strategy = CliSATExecutionStrategy(base_dir="/caminho/personalizado")
 - **Total**: 6-13 horas
 
 ### Cenário Pessimista (tempo limite completo)
-- **Small Fast**: 35 minutos
+- **Small Fast**: 70 minutos
 - **Medium**: 3 horas
 - **Large**: 6 horas
 - **Critical**: 6 horas

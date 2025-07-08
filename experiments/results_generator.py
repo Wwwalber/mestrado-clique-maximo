@@ -27,9 +27,16 @@ import os
 from typing import Dict, List, Tuple, Optional
 import logging
 
-from clisat_algortithmb import solve_maximum_clique_clisat
-from clique_heuristics import solve_maximum_clique_heuristic
-from apa_instance_manager import APAInstanceManager
+import sys
+from pathlib import Path
+
+# Adicionar diretório raiz do projeto ao path
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
+from algorithms.clisat_exact import solve_maximum_clique_clisat
+from algorithms.algorithm_interface import solve_maximum_clique_heuristic
+from data.instance_manager import APAInstanceManager
 
 logger = logging.getLogger(__name__)
 
