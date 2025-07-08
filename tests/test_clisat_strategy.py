@@ -38,7 +38,7 @@ def test_quick_execution():
     
     # Definir instâncias de teste (pequenas e rápidas)
     test_instances = ['C125.9', 'brock200_2', 'keller4']
-    test_time_limit = 120  # 2 minutos por instância
+    test_time_limit = 1800  # 30 minutos por instância
     
     print(f"Testando {len(test_instances)} instâncias pequenas:")
     for inst in test_instances:

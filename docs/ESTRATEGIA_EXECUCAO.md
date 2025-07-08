@@ -19,26 +19,26 @@ A estratégia foi desenvolvida para executar o algoritmo CliSAT de forma eficien
 ### Grupo 1: Small Fast (7 instâncias)
 - **Instâncias**: C125.9, brock200_2, brock200_4, gen200_p0.9_44, gen200_p0.9_55, keller4, hamming8-4
 - **Características**: < 300 nós, execução rápida
-- **Tempo limite**: 10 minutos por instância
-- **Tempo estimado**: 2-10 minutos por instância
+- **Tempo limite**: 30 minutos por instância
+- **Tempo estimado**: 5-30 minutos por instância
 
 ### Grupo 2: Medium (12 instâncias)
 - **Instâncias**: C250.9, brock400_2, brock400_4, gen400_*, MANN_a27, DSJC500_5, p_hat300_*, keller5
 - **Características**: 300-800 nós, tempo moderado
-- **Tempo limite**: 15 minutos por instância
-- **Tempo estimado**: 5-20 minutos por instância
+- **Tempo limite**: 45 minutos por instância
+- **Tempo estimado**: 10-45 minutos por instância
 
 ### Grupo 3: Large (12 instâncias)
 - **Instâncias**: C500.9, brock800_*, p_hat700_*, MANN_a45, hamming10-4, C1000.9, DSJC1000_5, p_hat1500_1/2
 - **Características**: 800-1500 nós, tempo considerável
-- **Tempo limite**: 30 minutos por instância
-- **Tempo estimado**: 10-45 minutos por instância
+- **Tempo limite**: 1 hora por instância
+- **Tempo estimado**: 15-60 minutos por instância
 
 ### Grupo 4: Critical (6 instâncias)
 - **Instâncias**: C2000.9, C2000.5, p_hat1500-3, keller6, MANN_a81, C4000.5
 - **Características**: > 1500 nós ou conhecidamente difíceis
-- **Tempo limite**: 60 minutos por instância
-- **Tempo estimado**: 30-60 minutos por instância
+- **Tempo limite**: 66 minutos por instância
+- **Tempo estimado**: 30-66 minutos por instância
 
 ## 🚀 Como Usar
 
@@ -165,7 +165,7 @@ Edite o arquivo `execute_clisat_strategy.py`, método `define_instance_groups()`
 
 ```python
 'small_fast': {
-    'time_limit': 300,  # Altere para o tempo desejado
+    'time_limit': 1800,  # Altere para o tempo desejado (30 minutos)
     # ...
 }
 ```
@@ -181,25 +181,25 @@ strategy = CliSATExecutionStrategy(base_dir="/caminho/personalizado")
 ## 📊 Estimativas de Tempo
 
 ### Cenário Otimista (30% do tempo limite)
-- **Small Fast**: 10-30 minutos
-- **Medium**: 30-90 minutos
-- **Large**: 1-3 horas
-- **Critical**: 1-2 horas
-- **Total**: 3-6 horas
+- **Small Fast**: 35-105 minutos
+- **Medium**: 90-270 minutos (1.5-4.5 horas)
+- **Large**: 180-540 minutos (3-9 horas)
+- **Critical**: 120-240 minutos (2-4 horas)
+- **Total**: 7-17 horas
 
 ### Cenário Realista (60% do tempo limite)
-- **Small Fast**: 20-60 minutos
-- **Medium**: 1-3 horas
-- **Large**: 3-6 horas
-- **Critical**: 2-4 horas
-- **Total**: 6-13 horas
+- **Small Fast**: 70-210 minutos (1.2-3.5 horas)
+- **Medium**: 180-540 minutos (3-9 horas)
+- **Large**: 360-1080 minutos (6-18 horas)
+- **Critical**: 240-480 minutos (4-8 horas)
+- **Total**: 14-38 horas
 
 ### Cenário Pessimista (tempo limite completo)
-- **Small Fast**: 70 minutos
-- **Medium**: 3 horas
-- **Large**: 6 horas
-- **Critical**: 6 horas
-- **Total**: 15+ horas
+- **Small Fast**: 210 minutos (3.5 horas)
+- **Medium**: 540 minutos (9 horas)
+- **Large**: 720 minutos (12 horas)
+- **Critical**: 400 minutos (6.7 horas)
+- **Total**: 31+ horas
 
 ## 🛡️ Tratamento de Erros
 
