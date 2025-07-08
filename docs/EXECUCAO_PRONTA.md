@@ -33,25 +33,25 @@ O sistema de execução estratégica do CliSAT foi **implementado com sucesso** 
 
 #### Fase 1: Execução Inicial (Dia 1)
 ```bash
-# Grupo Small Fast - 7 instâncias, ~70 minutos
+# Grupo Small Fast - 7 instâncias, ~3.5-7 horas
 python scripts/execute_clisat_strategy.py --groups small_fast
 ```
 
 #### Fase 2: Expansão (Dia 2-3)
 ```bash
-# Grupo Medium - 12 instâncias, ~3 horas
+# Grupo Medium - 12 instâncias, ~9-18 horas
 python scripts/execute_clisat_strategy.py --groups medium --resume
 ```
 
 #### Fase 3: Instâncias Grandes (Dia 4-5)
 ```bash
-# Grupo Large - 12 instâncias, ~6 horas
+# Grupo Large - 12 instâncias, ~12-24 horas
 python scripts/execute_clisat_strategy.py --groups large --resume
 ```
 
 #### Fase 4: Instâncias Críticas (Dia 6-7)
 ```bash
-# Grupo Critical - 6 instâncias, ~6 horas
+# Grupo Critical - 6 instâncias, ~6.7-13 horas
 python scripts/execute_clisat_strategy.py --groups critical --resume
 ```
 
@@ -89,22 +89,22 @@ python scripts/execute_clisat_strategy.py --groups critical
 ## 📋 Grupos Organizados por Dificuldade
 
 ### 🟢 Grupo Small Fast (7 instâncias)
-**Tempo estimado**: 60-70 minutos  
+**Tempo estimado**: 3.5-7 horas  
 **Dificuldade**: Baixa  
 **Instâncias**: C125.9, brock200_2, brock200_4, gen200_p0.9_44, gen200_p0.9_55, keller4, hamming8-4
 
 ### 🟡 Grupo Medium (12 instâncias)  
-**Tempo estimado**: 2-4 horas  
+**Tempo estimado**: 9-18 horas  
 **Dificuldade**: Moderada  
 **Instâncias**: C250.9, brock400_2, brock400_4, gen400_p0.9_55, gen400_p0.9_65, gen400_p0.9_75, MANN_a27, DSJC500_5, p_hat300-1, p_hat300-2, p_hat300-3, keller5
 
 ### 🟠 Grupo Large (12 instâncias)
-**Tempo estimado**: 4-8 horas  
+**Tempo estimado**: 12-24 horas  
 **Dificuldade**: Alta  
 **Instâncias**: C500.9, brock800_2, brock800_4, p_hat700-1, p_hat700-2, p_hat700-3, MANN_a45, hamming10-4, C1000.9, DSJC1000_5, p_hat1500-1, p_hat1500-2
 
 ### 🔴 Grupo Critical (6 instâncias)
-**Tempo estimado**: 3-6 horas  
+**Tempo estimado**: 6.7-13 horas  
 **Dificuldade**: Muito Alta  
 **Instâncias**: C2000.9, C2000.5, p_hat1500-3, keller6, MANN_a81, C4000.5
 
@@ -160,4 +160,4 @@ python scripts/analyze_clisat_results.py --all
 
 **Status**: ✅ Sistema testado e funcionando  
 **Próximo passo**: Executar `python scripts/execute_clisat_strategy.py --groups small_fast`  
-**Tempo estimado**: 60-70 minutos para primeiros resultados
+**Tempo estimado**: 3.5-7 horas para primeiros resultados

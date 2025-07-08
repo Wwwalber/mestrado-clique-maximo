@@ -71,7 +71,7 @@ class APAResultsGenerator:
             ]
         )
     
-    def run_single_instance(self, instance_name: str, time_limit_exact: int = 300, 
+    def run_single_instance(self, instance_name: str, time_limit_exact: int = 1800, 
                           time_limit_heuristic: int = 60) -> Dict:
         """
         Executar algoritmos em uma única instância.
@@ -166,7 +166,7 @@ class APAResultsGenerator:
         return result
     
     def run_all_instances(self, instances: List[str] = None, 
-                         time_limit_exact: int = 300,
+                         time_limit_exact: int = 1800,
                          time_limit_heuristic: int = 60) -> pd.DataFrame:
         """
         Executar algoritmos em todas as instâncias especificadas.
@@ -345,7 +345,7 @@ class APAResultsGenerator:
 
 # Função principal para executar os experimentos
 def run_apa_experiments(instances: List[str] = None, 
-                       time_limit_exact: int = 300,
+                       time_limit_exact: int = 1800,
                        time_limit_heuristic: int = 60,
                        save_file: str = "apa_results.csv") -> pd.DataFrame:
     """
@@ -381,12 +381,12 @@ if __name__ == "__main__":
     
     print("=== EXECUTANDO EXPERIMENTOS DE TESTE ===")
     print(f"Instâncias de teste: {test_instances}")
-    print("Tempo limite exato: 120s, heurística: 30s")
+    print("Tempo limite exato: 1800s, heurística: 60s")
     
     results = run_apa_experiments(
         instances=test_instances,
-        time_limit_exact=120,
-        time_limit_heuristic=30,
+        time_limit_exact=1800,
+        time_limit_heuristic=60,
         save_file="test_results.csv"
     )
     

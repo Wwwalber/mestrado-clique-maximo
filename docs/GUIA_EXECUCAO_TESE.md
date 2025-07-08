@@ -68,16 +68,16 @@ Para evitar tempos muito longos, execute por grupos de instâncias:
 
 ```bash
 # Instâncias pequenas (até 400 vértices)
-python scripts/batch_execution.py --group pequenas --output resultados_pequenas
+python scripts/batch_execution.py --group pequenas --output resultados_pequenas --time-limit-exact 1800
 
 # Instâncias médias (400-800 vértices)
-python scripts/batch_execution.py --group medias --output resultados_medias --time-limit-exact 900
+python scripts/batch_execution.py --group medias --output resultados_medias --time-limit-exact 2700
 
 # Instâncias grandes (800-2000 vértices)
-python scripts/batch_execution.py --group grandes --output resultados_grandes --time-limit-exact 1800
+python scripts/batch_execution.py --group grandes --output resultados_grandes --time-limit-exact 3600
 
 # Instâncias muito grandes (2000+ vértices)
-python scripts/batch_execution.py --group muito_grandes --output resultados_muito_grandes --time-limit-exact 3600
+python scripts/batch_execution.py --group muito_grandes --output resultados_muito_grandes --time-limit-exact 4000
 ```
 
 ### Opção 3: Execução Completa
@@ -85,7 +85,7 @@ python scripts/batch_execution.py --group muito_grandes --output resultados_muit
 Para executar todas as 37 instâncias de uma vez:
 
 ```bash
-python scripts/batch_execution.py --group all --output resultados_completos --time-limit-exact 1800
+python scripts/batch_execution.py --group all --output resultados_completos --time-limit-exact 4000
 ```
 
 **⚠️ Aviso:** A execução completa pode levar várias horas!
@@ -157,8 +157,8 @@ O script gera automaticamente:
 ### Tempos Limite Personalizados
 
 ```bash
-# Algoritmo exato: 30 minutos, Heurística: 2 minutos
-python scripts/batch_execution.py --time-limit-exact 1800 --time-limit-heuristic 120
+# Algoritmo exato: 66 minutos, Heurística: 5 minutos
+python scripts/batch_execution.py --time-limit-exact 4000 --time-limit-heuristic 300
 ```
 
 ### Execução de Instâncias Específicas
