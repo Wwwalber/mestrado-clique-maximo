@@ -33,26 +33,26 @@ O sistema de execução estratégica do CliSAT foi **implementado com sucesso** 
 
 #### Fase 1: Execução Inicial (Dia 1)
 ```bash
-# Grupo Small Fast - 7 instâncias, ~35 minutos
-python execute_clisat_strategy.py --groups small_fast
+# Grupo Small Fast - 7 instâncias, ~70 minutos
+python scripts/execute_clisat_strategy.py --groups small_fast
 ```
 
 #### Fase 2: Expansão (Dia 2-3)
 ```bash
 # Grupo Medium - 12 instâncias, ~3 horas
-python execute_clisat_strategy.py --groups medium --resume
+python scripts/execute_clisat_strategy.py --groups medium --resume
 ```
 
 #### Fase 3: Instâncias Grandes (Dia 4-5)
 ```bash
 # Grupo Large - 12 instâncias, ~6 horas
-python execute_clisat_strategy.py --groups large --resume
+python scripts/execute_clisat_strategy.py --groups large --resume
 ```
 
 #### Fase 4: Instâncias Críticas (Dia 6-7)
 ```bash
 # Grupo Critical - 6 instâncias, ~6 horas
-python execute_clisat_strategy.py --groups critical --resume
+python scripts/execute_clisat_strategy.py --groups critical --resume
 ```
 
 ## 🔄 Alternativas de Execução
@@ -60,36 +60,36 @@ python execute_clisat_strategy.py --groups critical --resume
 ### Opção A: Execução Completa (Para Quem Tem Tempo)
 ```bash
 # Todas as 37 instâncias de uma vez (até 15 horas)
-nohup python execute_clisat_strategy.py --all > execution.log 2>&1 &
+nohup python scripts/execute_clisat_strategy.py --all > execution.log 2>&1 &
 ```
 
 ### Opção B: Execução Conservadora (Mais Segura)
 ```bash
 # Uma instância por vez com análise
-python execute_clisat_strategy.py --groups small_fast
-python analyze_clisat_results.py --summary
+python scripts/execute_clisat_strategy.py --groups small_fast
+python scripts/analyze_clisat_results.py --summary
 
 # Continuar com próximo grupo baseado nos resultados
-python execute_clisat_strategy.py --groups medium --resume
-python analyze_clisat_results.py --summary
+python scripts/execute_clisat_strategy.py --groups medium --resume
+python scripts/analyze_clisat_results.py --summary
 ```
 
 ### Opção C: Execução Paralela (Para Múltiplas Máquinas)
 ```bash
 # Máquina 1:
-python execute_clisat_strategy.py --groups small_fast medium
+python scripts/execute_clisat_strategy.py --groups small_fast medium
 
 # Máquina 2:
-python execute_clisat_strategy.py --groups large
+python scripts/execute_clisat_strategy.py --groups large
 
 # Máquina 3:
-python execute_clisat_strategy.py --groups critical
+python scripts/execute_clisat_strategy.py --groups critical
 ```
 
 ## 📋 Grupos Organizados por Dificuldade
 
 ### 🟢 Grupo Small Fast (7 instâncias)
-**Tempo estimado**: 30-60 minutos  
+**Tempo estimado**: 60-70 minutos  
 **Dificuldade**: Baixa  
 **Instâncias**: C125.9, brock200_2, brock200_4, gen200_p0.9_44, gen200_p0.9_55, keller4, hamming8-4
 
@@ -133,19 +133,19 @@ Após a execução, você terá uma tabela no formato:
 
 ```bash
 # 1. Teste rápido (já feito ✓)
-python test_clisat_strategy.py
+python tests/test_clisat_strategy.py
 
 # 2. Começar execução
-python execute_clisat_strategy.py --groups small_fast
+python scripts/execute_clisat_strategy.py --groups small_fast
 
 # 3. Analisar resultados
-python analyze_clisat_results.py --summary
+python scripts/analyze_clisat_results.py --summary
 
 # 4. Continuar com próximo grupo
-python execute_clisat_strategy.py --groups medium --resume
+python scripts/execute_clisat_strategy.py --groups medium --resume
 
 # 5. Gerar relatório final
-python analyze_clisat_results.py --all
+python scripts/analyze_clisat_results.py --all
 ```
 
 ## 💡 Dicas Importantes
@@ -159,5 +159,5 @@ python analyze_clisat_results.py --all
 ---
 
 **Status**: ✅ Sistema testado e funcionando  
-**Próximo passo**: Executar `python execute_clisat_strategy.py --groups small_fast`  
-**Tempo estimado**: 30-60 minutos para primeiros resultados
+**Próximo passo**: Executar `python scripts/execute_clisat_strategy.py --groups small_fast`  
+**Tempo estimado**: 60-70 minutos para primeiros resultados
