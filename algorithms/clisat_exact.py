@@ -37,7 +37,7 @@ class CliSAT:
     """
     
     def __init__(self, graph: nx.Graph, time_limit: float = 3600.0, log_interval: int = 1000, 
-                 time_interval: float = 30.0, monitor_mode: str = 'log'):
+                 time_interval: float = 30.0):
         """
         Initialize the CliSAT solver.
         
@@ -46,7 +46,6 @@ class CliSAT:
             time_limit: Maximum time limit in seconds (default: 1 hour)
             log_interval: Intervalo para logs periódicos (número de nós processados)
             time_interval: Intervalo de tempo para logs periódicos (segundos)
-            monitor_mode: Tipo de monitoramento ('log', 'realtime', 'both', 'silent')
         """
         self.graph = graph
         self.n = graph.number_of_nodes()
@@ -54,7 +53,6 @@ class CliSAT:
         self.start_time = None
         self.log_interval = log_interval
         self.time_interval = time_interval
-        self.monitor_mode = monitor_mode
         
         # Criar matriz de adjacência
         self.adj_matrix = nx.adjacency_matrix(graph).todense()
@@ -81,23 +79,17 @@ class CliSAT:
         self.last_log_time = 0
         self.last_log_nodes = 0
         
-        # Controle de monitoramento em tempo real
-        self.dashboard_lines = 0
-        
         # Mapeamento de nós para trabalhar com índices consistentes
         self.node_to_index = {node: i for i, node in enumerate(sorted(graph.nodes()))}
         self.index_to_node = {i: node for node, i in self.node_to_index.items()}
     
     def _log_progress(self, force: bool = False):
         """
-        Log progress baseado no modo de monitoramento configurado.
+        Log progress simplificado.
         
         Args:
             force: Force logging regardless of interval
         """
-        if self.monitor_mode == 'silent':
-            return
-        
         current_time = time.time() - self.start_time
         nodes_since_last = self.stats['nodes_explored'] - self.last_log_nodes
         time_since_last = current_time - self.last_log_time
@@ -110,21 +102,18 @@ class CliSAT:
         if not should_update:
             return
         
-        if self.monitor_mode == 'log':
-            self._log_traditional(force)
-        elif self.monitor_mode == 'realtime':
-            self._display_realtime_dashboard()
-        elif self.monitor_mode == 'both':
-            # Em modo 'both', usar realtime durante execução e log para eventos especiais
-            if force:
-                self._log_traditional(force)
-            else:
-                self._display_realtime_dashboard()
+        hours = int(current_time // 3600)
+        minutes = int((current_time % 3600) // 60)
+        seconds = int(current_time % 60)
         
-        # Atualizar contadores apenas se não for realtime puro
-        if self.monitor_mode != 'realtime' or force:
-            self.last_log_nodes = self.stats['nodes_explored']
-            self.last_log_time = current_time
+        if force:
+            print(f"\n🔍 Progresso: {hours:02d}:{minutes:02d}:{seconds:02d} - "
+                  f"Melhor clique: {len(self.max_clique)} vértices")
+        else:
+            print(f"🔍 {hours:02d}:{minutes:02d}:{seconds:02d} - Melhor: {len(self.max_clique)}")
+        
+        self.last_log_nodes = self.stats['nodes_explored']
+        self.last_log_time = current_time
 
     def _time_exceeded(self) -> bool:
         """Verificar se o tempo limite foi excedido."""
@@ -143,11 +132,7 @@ class CliSAT:
         self.last_log_time = 0
         
         print(f"\n🚀 INICIANDO CliSAT")
-        print(f"   📊 Grafo: {self.n} vértices, {self.graph.number_of_edges()} arestas")
-        print(f"   ⏱️  Limite de tempo: {self.time_limit:.0f}s")
-        print(f"   📋 Intervalo de log: a cada {self.log_interval} nós ou {self.time_interval}s")
-        print(f"   👀 Modo de monitoramento: {self.monitor_mode}")
-        print("=" * 50)
+        print(f"   Grafo: {self.n} vértices, {self.graph.number_of_edges()} arestas")
         
         logger.info(f"Iniciando CliSAT para grafo com {self.n} vértices")
         
@@ -156,18 +141,14 @@ class CliSAT:
         self.lb = len(self.max_clique)
         logger.info(f"Clique inicial (guloso): tamanho {self.lb}")
         
-        print(f"\n🎯 Clique inicial encontrado:")
-        print(f"   📏 Tamanho: {self.lb}")
-        print(f"   📋 Vértices: {self.max_clique[:min(10, len(self.max_clique))]}")
-        if len(self.max_clique) > 10:
-            print(f"        ... e mais {len(self.max_clique) - 10} vértices")
+        print(f"🎯 Clique inicial: {self.lb} vértices")
         
         # COLOR-SORT (Seção 2.5)
         self.initial_ordering = self.color_sort()
-        print(f"\n🎨 Ordenação COLOR-SORT concluída")
         
         # Algoritmo principal do CliSAT
-        print(f"\n🔄 Iniciando busca principal...")
+        print(f"🔄 Iniciando busca...")
+        
         for i in range(self.lb, self.n):
             if self._time_exceeded():
                 logger.warning("Tempo limite excedido")
@@ -196,15 +177,9 @@ class CliSAT:
         print(f"\n🏁 CliSAT FINALIZADO!")
         print(f"   ⏱️  Tempo total: {total_time:.2f}s")
         print(f"   🎯 Clique máximo: {len(self.max_clique)} vértices")
-        print(f"   📋 Vértices: {self.max_clique}")
-        print(f"   📊 Nós explorados: {self.stats['nodes_explored']:,}")
-        print(f"   🔗 Chamadas SAT: {self.stats['sat_calls']:,}")
-        print(f"   ✂️  Podas por limite: {self.stats['pruned_by_bound']:,}")
-        print("=" * 50)
         
         logger.info(f"CliSAT finalizado em {total_time:.2f}s")
         logger.info(f"Melhor clique encontrado: tamanho {self.lb}")
-        logger.info(f"Estatísticas: {self.stats}")
         
         return self.max_clique, self.lb
 
@@ -227,25 +202,13 @@ class CliSAT:
             self.lb = len(K_hat)
             self.max_clique = K_hat.copy()
             
-            # Log de novo clique baseado no modo
-            if self.monitor_mode != 'silent':
-                elapsed = time.time() - self.start_time
-                hours = int(elapsed // 3600)
-                minutes = int((elapsed % 3600) // 60)
-                seconds = int(elapsed % 60)
-                
-                if self.monitor_mode == 'realtime':
-                    # No modo realtime, apenas atualizar o dashboard
-                    self._display_realtime_dashboard()
-                else:
-                    # Nos outros modos, fazer log completo
-                    print(f"\n🎉 NOVO MELHOR CLIQUE ENCONTRADO!")
-                    print(f"   📏 Tamanho: {self.lb}")
-                    print(f"   ⏱️  Tempo: {hours:02d}:{minutes:02d}:{seconds:02d}")
-                    print(f"   🔢 Nó: {self.stats['nodes_explored']:,}")
-                    print(f"   📋 Clique: {K_hat[:min(10, len(K_hat))]}")
-                    if len(K_hat) > 10:
-                        print(f"        ... e mais {len(K_hat) - 10} vértices")
+            # Log de novo clique
+            elapsed = time.time() - self.start_time
+            hours = int(elapsed // 3600)
+            minutes = int((elapsed % 3600) // 60)
+            seconds = int(elapsed % 60)
+            
+            print(f"🎉 Novo clique: {self.lb} vértices ({hours:02d}:{minutes:02d}:{seconds:02d})")
             
             logger.info(f"Novo melhor clique encontrado: tamanho {self.lb}")
         
@@ -659,19 +622,18 @@ class CliSAT:
 
     def print_solution_summary(self) -> None:
         """Imprimir resumo da solução encontrada."""
-        print(f"\n=== CliSAT Solution Summary ===")
-        print(f"Graph: {self.n} vertices, {len(self.graph.edges())} edges")
-        print(f"Maximum clique size: {self.lb}")
-        print(f"Maximum clique: {self.max_clique}")
-        print(f"Is valid clique: {self.verify_clique(self.max_clique)}")
+        print(f"\n=== Resumo da Solução ===")
+        print(f"Grafo: {self.n} vértices, {len(self.graph.edges())} arestas")
+        print(f"Tamanho do clique máximo: {self.lb}")
+        print(f"Clique válido: {self.verify_clique(self.max_clique)}")
         
         stats = self.get_statistics()
-        print(f"\n=== Execution Statistics ===")
-        for key, value in stats.items():
-            if key == 'total_time':
-                print(f"{key}: {value:.2f}s")
-            else:
-                print(f"{key}: {value}")
+        print(f"\n=== Estatísticas de Execução ===")
+        print(f"Tempo total: {stats['total_time']:.2f}s")
+        print(f"Nós explorados: {stats['nodes_explored']:,}")
+        print(f"Vértices do grafo: {stats['graph_vertices']}")
+        print(f"Arestas do grafo: {stats['graph_edges']}")
+        print(f"Limite de tempo: {stats['time_limit']}s")
     
     def _clear_screen(self):
         """Limpar tela para monitoramento em tempo real."""
@@ -679,95 +641,10 @@ class CliSAT:
             os.system('cls')
         else:  # Linux/Mac
             os.system('clear')
-    
-    def _move_cursor_up(self, lines: int):
-        """Mover cursor para cima (para atualizar dashboard)."""
-        if lines > 0:
-            sys.stdout.write(f'\033[{lines}A')
-            sys.stdout.flush()
-    
-    def _display_realtime_dashboard(self):
-        """Exibir dashboard em tempo real (atualiza na mesma posição)."""
-        current_time = time.time() - self.start_time
-        hours = int(current_time // 3600)
-        minutes = int((current_time % 3600) // 60)
-        seconds = int(current_time % 60)
-        
-        rate = self.stats['nodes_explored'] / current_time if current_time > 0 else 0
-        
-        # Se não é a primeira vez, mover cursor para cima
-        if self.dashboard_lines > 0:
-            self._move_cursor_up(self.dashboard_lines)
-        
-        dashboard = []
-        dashboard.append("┌" + "─" * 58 + "┐")
-        dashboard.append("│" + " " * 18 + "🔍 CliSAT MONITOR" + " " * 22 + "│")
-        dashboard.append("├" + "─" * 58 + "┤")
-        dashboard.append(f"│ ⏱️  Tempo: {hours:02d}:{minutes:02d}:{seconds:02d}" + " " * 32 + "│")
-        dashboard.append(f"│ 🔢 Nós: {self.stats['nodes_explored']:,}" + " " * (50 - len(f"Nós: {self.stats['nodes_explored']:,}")) + "│")
-        dashboard.append(f"│ 📊 Taxa: {rate:.1f} nós/seg" + " " * (42 - len(f"Taxa: {rate:.1f} nós/seg")) + "│")
-        dashboard.append(f"│ 🎯 Clique: {len(self.max_clique)} vértices" + " " * (36 - len(f"Clique: {len(self.max_clique)} vértices")) + "│")
-        
-        if self.max_clique:
-            clique_str = str(self.max_clique[:5])
-            if len(self.max_clique) > 5:
-                clique_str = clique_str[:-1] + f"...+{len(self.max_clique)-5}]"
-            dashboard.append(f"│ 📋 {clique_str}" + " " * (56 - len(clique_str)) + "│")
-        else:
-            dashboard.append("│ 📋 Nenhum clique encontrado" + " " * 25 + "│")
-        
-        dashboard.append(f"│ 🔗 SAT: {self.stats['sat_calls']:,}" + " " * (48 - len(f"SAT: {self.stats['sat_calls']:,}")) + "│")
-        dashboard.append(f"│ ✂️  Podas: {self.stats['pruned_by_bound']:,}" + " " * (45 - len(f"Podas: {self.stats['pruned_by_bound']:,}")) + "│")
-        dashboard.append("└" + "─" * 58 + "┘")
-        
-        # Imprimir dashboard
-        for line in dashboard:
-            print(line)
-        
-        # Armazenar número de linhas para próxima atualização
-        self.dashboard_lines = len(dashboard)
-    
-    def _log_traditional(self, force: bool = False):
-        """Log tradicional (modo atual)."""
-        current_time = time.time() - self.start_time
-        nodes_since_last = self.stats['nodes_explored'] - self.last_log_nodes
-        time_since_last = current_time - self.last_log_time
-        
-        # Log se: forçado, ou atingiu intervalo de nós, ou atingiu intervalo de tempo
-        should_log = (force or 
-                     nodes_since_last >= self.log_interval or 
-                     time_since_last >= self.time_interval)
-        
-        if should_log:
-            elapsed_time = current_time
-            hours = int(elapsed_time // 3600)
-            minutes = int((elapsed_time % 3600) // 60)
-            seconds = int(elapsed_time % 60)
-            
-            rate = self.stats['nodes_explored'] / elapsed_time if elapsed_time > 0 else 0
-            
-            print(f"\n🔍 PROGRESSO CliSAT:")
-            print(f"   ⏱️  Tempo: {hours:02d}:{minutes:02d}:{seconds:02d}")
-            print(f"   🔢 Nós processados: {self.stats['nodes_explored']:,}")
-            print(f"   📊 Taxa: {rate:.1f} nós/seg")
-            print(f"   🎯 Maior clique: {len(self.max_clique)} vértices")
-            if self.max_clique:
-                print(f"   📋 Clique atual: {self.max_clique[:min(10, len(self.max_clique))]}")
-                if len(self.max_clique) > 10:
-                    print(f"        ... e mais {len(self.max_clique) - 10} vértices")
-            print(f"   🔗 Chamadas SAT: {self.stats['sat_calls']:,}")
-            print(f"   ✂️  Podas: {self.stats['pruned_by_bound']:,}")
-            print(f"   🧮 Filter Phase: {self.stats['filter_phase_calls']:,}")
-            print(f"   🎨 SATCOL: {self.stats['satcol_calls']:,}")
-            print("-" * 50)
-            
-            self.last_log_nodes = self.stats['nodes_explored']
-            self.last_log_time = current_time
 
 
 def solve_maximum_clique_clisat(graph: nx.Graph, time_limit: float = 3600.0, 
-                                log_interval: int = 1000, time_interval: float = 30.0,
-                                monitor_mode: str = 'log') -> Tuple[List, int, float]:
+                                log_interval: int = 1000, time_interval: float = 30.0) -> Tuple[List, int, float]:
     """
     Função conveniente para resolver o problema do clique máximo usando CliSAT.
     
@@ -776,13 +653,12 @@ def solve_maximum_clique_clisat(graph: nx.Graph, time_limit: float = 3600.0,
         time_limit: Tempo limite em segundos (default: 1 hora)
         log_interval: Intervalo de nós para logs periódicos
         time_interval: Intervalo de tempo para logs periódicos (segundos)
-        monitor_mode: Modo de monitoramento ('log', 'realtime', 'both', 'silent')
         
     Returns:
         Tuple contendo (lista_de_nós_do_clique, tamanho_do_clique, tempo_execução)
     """
     start_time = time.time()
-    solver = CliSAT(graph, time_limit, log_interval, time_interval, monitor_mode)
+    solver = CliSAT(graph, time_limit, log_interval, time_interval)
     clique, size = solver.solve()
     execution_time = time.time() - start_time
     

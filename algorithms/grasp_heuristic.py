@@ -1,7 +1,13 @@
 """
 Implementação da Heurística GRASP para o Problema do Clique Máximo
 
-Este módulo implementa o algoritmo GRASP (Greedy Randomized Adaptive Search Procedure)
+Este módulo implementa o algoritmo GRASP (Greedy Randomized Adaptive Sear                # Log periódico
+                if iteration % 100 == 0:
+                    elapsed = time.time() - start_time
+                    hours = int(elapsed // 3600)
+                    minutes = int((elapsed % 3600) // 60)
+                    seconds = int(elapsed % 60)
+                    print(f"🔍 Progresso: Melhor: {self.best_clique_size} ({hours:02d}:{minutes:02d}:{seconds:02d})")edure)
 seguindo a estrutura clássica da metaheurística para o problema do clique máximo.
 
 ESTRUTURA DO GRASP:
@@ -38,7 +44,6 @@ class GRASPParameters:
     max_no_improvement: int = 100    # Máximo de iterações sem melhoria
     local_search_intensity: int = 3  # Intensidade da busca local
     seed: Optional[int] = None       # Semente para reprodutibilidade
-    verbose: bool = True             # Imprimir progresso
 
 
 @dataclass
@@ -93,7 +98,7 @@ class GRASPMaximumClique:
         self.n_nodes = len(self.nodes)
         self.adjacency_dict = {node: set(self.graph.neighbors(node)) for node in self.nodes}
         
-        logger.info(f"GRASP inicializado: {self.n_nodes} nós, α={self.params.alpha}")
+        logger.info(f"GRASP inicializado: {self.n_nodes} nós")
 
     def solve(self) -> Tuple[List[int], int, float]:
         """
@@ -104,13 +109,8 @@ class GRASPMaximumClique:
         """
         start_time = time.time()
         
-        if self.params.verbose:
-            print("\n🚀 INICIANDO GRASP PARA CLIQUE MÁXIMO")
-            print("="*50)
-            print(f"📊 Grafo: {self.n_nodes} vértices, {len(self.graph.edges())} arestas")
-            print(f"⚙️  Parâmetros: α={self.params.alpha}, max_iter={self.params.max_iterations}")
-            print(f"⏱️  Limite de tempo: {self.params.time_limit}s")
-            print("="*50)
+        print("\n🚀 INICIANDO GRASP")
+        print(f"   Grafo: {self.n_nodes} vértices, {len(self.graph.edges())} arestas")
         
         # Variáveis de controle
         iteration = 0
@@ -140,19 +140,22 @@ class GRASPMaximumClique:
                     self.stats.improvements_found += 1
                     last_improvement = iteration
                     
-                    if self.params.verbose and iteration % 10 == 0:
-                        elapsed = time.time() - start_time
-                        print(f"🎯 Iteração {iteration}: Novo melhor clique = {self.best_clique_size} "
-                              f"(tempo: {elapsed:.1f}s)")
+                    elapsed = time.time() - start_time
+                    hours = int(elapsed // 3600)
+                    minutes = int((elapsed % 3600) // 60)
+                    seconds = int(elapsed % 60)
+                    print(f"🎯 Novo melhor: {self.best_clique_size} vértices ({hours:02d}:{minutes:02d}:{seconds:02d})")
                 
                 # Registrar estatísticas
                 self.stats.clique_sizes_history.append(len(improved_clique))
                 
                 # Log periódico
-                if self.params.verbose and iteration % 100 == 0:
+                if iteration % 100 == 0:
                     elapsed = time.time() - start_time
-                    print(f"📈 Progresso: Iteração {iteration}/{self.params.max_iterations}, "
-                          f"Melhor: {self.best_clique_size}, Tempo: {elapsed:.1f}s")
+                    hours = int(elapsed // 3600)
+                    minutes = int((elapsed % 3600) // 60)
+                    seconds = int(elapsed % 60)
+                    print(f"� Progresso: {iteration}/{self.params.max_iterations} - Melhor: {self.best_clique_size} ({hours:02d}:{minutes:02d}:{seconds:02d})")
         
         except KeyboardInterrupt:
             print("\n⏹️  GRASP interrompido pelo usuário")
@@ -161,8 +164,9 @@ class GRASPMaximumClique:
         self.stats.total_iterations = iteration
         self.stats.total_time = time.time() - start_time
         
-        if self.params.verbose:
-            self._print_final_results()
+        print(f"\n🏁 GRASP FINALIZADO!")
+        print(f"   ⏱️  Tempo total: {self.stats.total_time:.2f}s")
+        print(f"   🎯 Melhor clique: {self.best_clique_size} vértices")
         
         return self.best_clique, self.best_clique_size, self.stats.total_time
 
@@ -458,25 +462,6 @@ class GRASPMaximumClique:
         
         return True
 
-    def _print_final_results(self):
-        """Imprimir resultados finais do GRASP."""
-        print("\n🏁 GRASP FINALIZADO!")
-        print("="*50)
-        print(f"🎯 Melhor clique encontrado: {self.best_clique_size} vértices")
-        print(f"⏱️  Tempo total: {self.stats.total_time:.2f}s")
-        print(f"🔄 Iterações executadas: {self.stats.total_iterations}")
-        print(f"📈 Melhorias encontradas: {self.stats.improvements_found}")
-        print(f"🏆 Melhor solução na iteração: {self.stats.best_iteration}")
-        print(f"⚙️  Tempo de construção: {self.stats.construction_time:.2f}s")
-        print(f"🔍 Tempo de busca local: {self.stats.local_search_time:.2f}s")
-        
-        if len(self.best_clique) <= 20:
-            print(f"📋 Clique: {sorted(self.best_clique)}")
-        else:
-            print(f"📋 Clique: {sorted(self.best_clique[:10])} ... (+{len(self.best_clique)-10} vértices)")
-        
-        print("="*50)
-
     def get_statistics(self) -> Dict:
         """
         Obter estatísticas detalhadas da execução.
@@ -503,8 +488,7 @@ def solve_maximum_clique_grasp(graph: nx.Graph,
                               max_iterations: int = 1000,
                               time_limit: float = 300.0,
                               max_no_improvement: int = 100,
-                              seed: Optional[int] = None,
-                              verbose: bool = True) -> Tuple[List[int], int, float]:
+                              seed: Optional[int] = None) -> Tuple[List[int], int, float]:
     """
     Interface principal para resolver o problema do clique máximo com GRASP.
     
@@ -515,7 +499,6 @@ def solve_maximum_clique_grasp(graph: nx.Graph,
         time_limit: Limite de tempo em segundos
         max_no_improvement: Máximo de iterações sem melhoria
         seed: Semente aleatória para reprodutibilidade
-        verbose: Imprimir progresso da execução
         
     Returns:
         Tupla (clique, tamanho, tempo_execução)
@@ -525,8 +508,7 @@ def solve_maximum_clique_grasp(graph: nx.Graph,
         max_iterations=max_iterations,
         time_limit=time_limit,
         max_no_improvement=max_no_improvement,
-        seed=seed,
-        verbose=verbose
+        seed=seed
     )
     
     grasp = GRASPMaximumClique(graph, params)
@@ -561,8 +543,7 @@ def compare_grasp_parameters(graph: nx.Graph,
             graph=graph,
             alpha=alpha,
             max_iterations=iterations_per_test,
-            time_limit=time_limit,
-            verbose=False
+            time_limit=time_limit
         )
         
         results[alpha] = {
@@ -598,8 +579,7 @@ if __name__ == "__main__":
         graph=G,
         alpha=0.3,
         max_iterations=50,
-        time_limit=10.0,
-        verbose=True
+        time_limit=10.0
     )
     
     print(f"\n✅ Resultado: clique de tamanho {size} em {time_exec:.3f}s")
