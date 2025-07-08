@@ -98,6 +98,9 @@ class GRASPMaximumClique:
         self.n_nodes = len(self.nodes)
         self.adjacency_dict = {node: set(self.graph.neighbors(node)) for node in self.nodes}
         
+        # Estimativa de tempo para timeout
+        self.timeout_estimate = None
+        
         logger.info(f"GRASP inicializado: {self.n_nodes} nós")
 
     def solve(self) -> Tuple[List[int], int, float]:
@@ -188,6 +191,23 @@ class GRASPMaximumClique:
         
         # Limite de tempo
         if time.time() - start_time >= self.params.time_limit:
+            # Adicionar estimativa de tempo
+            from utils.timeout_estimator import TimeoutEstimator
+            
+            current_time = time.time() - start_time
+            estimate = TimeoutEstimator.estimate_grasp_time(
+                iteration=iteration,
+                current_time=current_time,
+                max_iterations=self.params.max_iterations,
+                best_clique_size=self.best_clique_size,
+                improvement_history=self.stats.clique_sizes_history
+            )
+            
+            print(TimeoutEstimator.format_time_estimate(estimate))
+            
+            # Salvar para relatório
+            self.timeout_estimate = estimate
+            
             return False
         
         # Estagnação (sem melhoria por muito tempo)
