@@ -79,6 +79,9 @@ class CliSAT:
         self.last_log_time = 0
         self.last_log_nodes = 0
         
+        # Estimativa de tempo para timeout
+        self.timeout_estimate = None
+        
         # Mapeamento de nós para trabalhar com índices consistentes
         self.node_to_index = {node: i for i, node in enumerate(sorted(graph.nodes()))}
         self.index_to_node = {i: node for node, i in self.node_to_index.items()}
@@ -151,6 +154,22 @@ class CliSAT:
         
         for i in range(self.lb, self.n):
             if self._time_exceeded():
+                # Adicionar estimativa de tempo
+                from utils.timeout_estimator import TimeoutEstimator
+                
+                current_time = time.time() - self.start_time
+                estimate = TimeoutEstimator.estimate_clisat_time(
+                    stats=self.stats,
+                    current_time=current_time,
+                    graph_size=self.n,
+                    current_bound=self.lb
+                )
+                
+                print(TimeoutEstimator.format_time_estimate(estimate))
+                
+                # Salvar para relatório
+                self.timeout_estimate = estimate
+                
                 logger.warning("Tempo limite excedido")
                 print(f"\n⏰ Tempo limite de {self.time_limit}s excedido!")
                 break
@@ -644,7 +663,7 @@ class CliSAT:
 
 
 def solve_maximum_clique_clisat(graph: nx.Graph, time_limit: float = 3600.0, 
-                                log_interval: int = 1000, time_interval: float = 30.0) -> Tuple[List, int, float]:
+                                log_interval: int = 1000, time_interval: float = 30.0) -> Tuple[List, int, Dict]:
     """
     Função conveniente para resolver o problema do clique máximo usando CliSAT.
     
@@ -655,18 +674,28 @@ def solve_maximum_clique_clisat(graph: nx.Graph, time_limit: float = 3600.0,
         time_interval: Intervalo de tempo para logs periódicos (segundos)
         
     Returns:
-        Tuple contendo (lista_de_nós_do_clique, tamanho_do_clique, tempo_execução)
+        Tuple contendo (lista_de_nós_do_clique, tamanho_do_clique, estatísticas_dict)
+        onde estatísticas_dict contém: execution_time, timeout_estimate (se aplicável), 
+        e outras estatísticas do algoritmo
     """
     start_time = time.time()
     solver = CliSAT(graph, time_limit, log_interval, time_interval)
     clique, size = solver.solve()
     execution_time = time.time() - start_time
     
+    # Coletar estatísticas completas
+    stats = solver.get_statistics()
+    stats['execution_time'] = execution_time
+    
+    # Adicionar estimativa de timeout se disponível
+    if hasattr(solver, 'timeout_estimate'):
+        stats['timeout_estimate'] = solver.timeout_estimate
+    
     # Imprimir estatísticas se desejado
     if logger.isEnabledFor(logging.INFO):
         solver.print_solution_summary()
     
-    return clique, size, execution_time
+    return clique, size, stats
 
 
 # Exemplo de uso e testes
