@@ -1,0 +1,38 @@
+Instance,Nodes,Edges,GRASP_Size,GRASP_Time,GRASP_Status,GRASP_Timeout_Estimate,GRASP_Timeout_Method,GRASP_Iterations
+C125.9,125,6963,33,2.260863,COMPLETED,N/A,No timeout,123
+C250.9,250,27984,40,3.016001,COMPLETED,64.16955400020518,Baseado na taxa de progresso das iterações,47
+C500.9,500,112332,45,3.103849,COMPLETED,238.75495103689343,Baseado na taxa de progresso das iterações,13
+C1000.9,1000,450079,53,3.137899,COMPLETED,1045.953353246053,Baseado na taxa de progresso das iterações,3
+C2000.9,2000,1799532,59,5.466443,COMPLETED,5466.4130210876465,Baseado na taxa de progresso das iterações,1
+DSJC1000_5,1000,249826,12,3.154467,COMPLETED,137.14926139168116,Baseado na taxa de progresso das iterações,23
+DSJC500_5,500,62624,12,3.027552,COMPLETED,37.376686378761576,Baseado na taxa de progresso das iterações,81
+C2000.5,2000,999836,13,3.627833,COMPLETED,725.5604267120361,Baseado na taxa de progresso das iterações,5
+C4000.5,4000,4000268,14,4.036166,COMPLETED,4036.1392498016357,Baseado na taxa de progresso das iterações,1
+MANN_a27,378,70551,120,3.494437,COMPLETED,873.6010789871216,Baseado na taxa de progresso das iterações,4
+MANN_a45,1035,533115,332,32.813808,COMPLETED,32813.73834609985,Baseado na taxa de progresso das iterações,1
+MANN_a81,3321,5506380,1080,1242.904402,COMPLETED,1242904.3715000153,Baseado na taxa de progresso das iterações,1
+brock200_2,200,9876,11,0.959404,COMPLETED,N/A,No timeout,146
+brock200_4,200,13089,15,1.042961,COMPLETED,N/A,No timeout,118
+brock400_2,400,59786,21,3.004186,COMPLETED,49.24830061490418,Baseado na taxa de progresso das iterações,61
+brock400_4,400,59765,22,3.015605,COMPLETED,47.11820930242539,Baseado na taxa de progresso das iterações,64
+brock800_2,800,208166,18,3.155895,COMPLETED,131.49345914522806,Baseado na taxa de progresso das iterações,24
+brock800_4,800,207643,0,0.0,ERROR: [Errno 32] Broken pipe,ERROR,ERROR,ERROR
+gen200_p0.9_44,200,17910,37,3.001382,COMPLETED,34.89934289178183,Baseado na taxa de progresso das iterações,86
+gen200_p0.9_55,200,17910,45,3.009086,COMPLETED,38.0890580672252,Baseado na taxa de progresso das iterações,79
+gen400_p0.9_55,400,71820,44,3.040473,COMPLETED,132.19295377316683,Baseado na taxa de progresso das iterações,23
+gen400_p0.9_65,400,71820,44,3.045889,COMPLETED,138.448335907676,Baseado na taxa de progresso das iterações,22
+gen400_p0.9_75,400,71820,46,3.0839,COMPLETED,134.0811252593994,Baseado na taxa de progresso das iterações,23
+hamming10-4,1024,434176,34,3.42055,COMPLETED,427.5636374950409,Baseado na taxa de progresso das iterações,8
+hamming8-4,256,20864,16,1.509068,COMPLETED,N/A,No timeout,101
+keller4,171,9435,11,0.606855,COMPLETED,N/A,No timeout,109
+keller5,776,225990,22,3.114575,COMPLETED,183.20845155154956,Baseado na taxa de progresso das iterações,17
+keller6,3361,4619898,42,9.70457,COMPLETED,9704.537391662598,Baseado na taxa de progresso das iterações,1
+p_hat300-1,300,10933,8,0.754671,COMPLETED,N/A,No timeout,104
+p_hat300-2,300,21928,25,3.032499,COMPLETED,25.270503759384155,Baseado na taxa de progresso das iterações,120
+p_hat300-3,300,33390,33,3.021677,COMPLETED,45.7824757604888,Baseado na taxa de progresso das iterações,66
+p_hat700-1,700,60999,9,3.027272,COMPLETED,46.57263389000526,Baseado na taxa de progresso das iterações,65
+p_hat700-2,700,121728,39,3.021996,COMPLETED,159.05050227516577,Baseado na taxa de progresso das iterações,19
+p_hat700-3,700,183010,49,3.141062,COMPLETED,241.61698268010068,Baseado na taxa de progresso das iterações,13
+p_hat1500-1,1500,284923,0,0.0,ERROR: [Errno 32] Broken pipe,ERROR,ERROR,ERROR
+p_hat1500-2,1500,568960,47,3.287406,COMPLETED,657.4739933013916,Baseado na taxa de progresso das iterações,5
+p_hat1500-3,1500,847244,61,4.038361,COMPLETED,1346.1103439331055,Baseado na taxa de progresso das iterações,3
