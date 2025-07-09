@@ -1,0 +1,17 @@
+
+\begin{table}[!htbp]
+\centering
+\caption{Resultados Experimentais: Algoritmo Exato (CliSAT) vs. Heurística (GRASP)}
+\label{tab:resultados_clique_maximo}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|r|r|r|r|r|r|r|r|}
+\hline
+\textbf{Instância} & \textbf{Vértices} & \textbf{Arestas} & \textbf{Clique Exato} & \textbf{Tempo Exato (s)} & \textbf{Clique Heurístico} & \textbf{Tempo Heur. (s)} & \textbf{Qualidade (\%)} & \textbf{Speedup} \\
+\hline
+C125.9 & 125 & 6963 & 0 & 10.000 & 33 & 1.656 & --- & 6.0x \\
+brock200_2 & 200 & 9876 & 0 & 10.000 & 11 & 0.598765 & --- & 16.7x \\
+keller4 & 171 & 9435 & 0 & 10.000 & 11 & 0.697857 & --- & 14.3x \\
+\hline
+\end{tabular}%
+}
+\end{table}

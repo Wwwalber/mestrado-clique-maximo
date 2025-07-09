@@ -1,0 +1,4 @@
+Instance,Nodes,Edges,Exact_Size,Exact_Time,Exact_Status,Heuristic_Status,Heuristic_Size,Heuristic_Time,Quality,Speedup
+C125.9,125,6963,0,10,ERROR,COMPLETED,33,1.655728,0.0,6.0
+brock200_2,200,9876,0,10,ERROR,COMPLETED,11,0.598765,0.0,16.7
+keller4,171,9435,0,10,ERROR,COMPLETED,11,0.697857,0.0,14.3

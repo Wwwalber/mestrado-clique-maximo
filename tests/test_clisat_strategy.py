@@ -13,8 +13,8 @@ import sys
 import time
 from pathlib import Path
 
-# Adicionar src ao path
-sys.path.append(str(Path(__file__).parent / "src"))
+# Adicionar scripts ao path
+sys.path.append(str(Path(__file__).parent.parent / "scripts"))
 
 from execute_clisat_strategy import CliSATExecutionStrategy
 import logging

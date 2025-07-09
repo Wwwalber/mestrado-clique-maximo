@@ -171,8 +171,7 @@ def solve_maximum_clique_heuristic(graph: nx.Graph,
         alpha=alpha,
         max_iterations=max_iterations,
         time_limit=time_limit,
-        seed=seed,
-        verbose=kwargs.get('verbose', False)
+        seed=seed
     )
 
 

@@ -5,10 +5,14 @@ substituindo a heurística gulosa simples no sistema.
 """
 
 import sys
+from pathlib import Path
 import networkx as nx
 
+# Adicionar raiz do projeto ao path
+sys.path.append(str(Path(__file__).parent.parent))
+
 # Testar importação da nova interface
-from clique_heuristics import solve_maximum_clique_heuristic
+from algorithms.algorithm_interface import solve_maximum_clique_heuristic
 
 def test_grasp_integration():
     """Testa se a integração GRASP está funcionando corretamente."""

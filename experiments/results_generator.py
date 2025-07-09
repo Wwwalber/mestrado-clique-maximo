@@ -109,7 +109,7 @@ class APAResultsGenerator:
         logger.info("  Executando algoritmo exato (CliSAT)...")
         try:
             start_time = time.time()
-            exact_clique, exact_size = solve_maximum_clique_clisat(graph, time_limit=time_limit_exact)
+            exact_clique, exact_size, exact_stats = solve_maximum_clique_clisat(graph, time_limit=time_limit_exact)
             exact_time = time.time() - start_time
             
             result['Exact_Size'] = exact_size
