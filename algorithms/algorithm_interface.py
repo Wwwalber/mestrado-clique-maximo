@@ -149,9 +149,44 @@ def solve_maximum_clique_heuristic(graph: nx.Graph,
                                   max_iterations: int = 100,
                                   time_limit: float = 60.0,
                                   seed: int = 42,
-                                  **kwargs) -> Tuple[List[int], int, float]:
+                                  return_stats: bool = False,
+                                  **kwargs) -> Tuple[List[int], int, float, Optional[Dict]]:
     """
     Interface de compatibilidade para GRASP.
+    
+    Args:
+        graph: Grafo NetworkX
+        alpha: Parâmetro de aleatoriedade GRASP
+        max_iterations: Número máximo de iterações
+        time_limit: Limite de tempo em segundos
+        seed: Semente aleatória
+        return_stats: Se True, retorna estatísticas incluindo timeout_estimate
+        **kwargs: Parâmetros adicionais
+        
+    Returns:
+        Tupla (clique, tamanho, tempo, stats_dict)
+        stats_dict contém timeout_estimate se aplicável
+    """
+    from .grasp_heuristic import solve_maximum_clique_grasp
+    
+    return solve_maximum_clique_grasp(
+        graph=graph,
+        alpha=alpha,
+        max_iterations=max_iterations,
+        time_limit=time_limit,
+        seed=seed,
+        return_stats=return_stats
+    )
+
+
+def solve_maximum_clique_heuristic_with_stats(graph: nx.Graph,
+                                             alpha: float = 0.3,
+                                             max_iterations: int = 100,
+                                             time_limit: float = 60.0,
+                                             seed: int = 42,
+                                             **kwargs) -> Tuple[List[int], int, float, Dict]:
+    """
+    Interface para GRASP que sempre retorna estatísticas incluindo timeout_estimate.
     
     Args:
         graph: Grafo NetworkX
@@ -162,17 +197,25 @@ def solve_maximum_clique_heuristic(graph: nx.Graph,
         **kwargs: Parâmetros adicionais
         
     Returns:
-        Tupla (clique, tamanho, tempo)
+        Tupla (clique, tamanho, tempo, stats_dict)
+        stats_dict sempre incluído, com timeout_estimate se aplicável
     """
     from .grasp_heuristic import solve_maximum_clique_grasp
     
-    return solve_maximum_clique_grasp(
+    clique, size, time_exec, stats = solve_maximum_clique_grasp(
         graph=graph,
         alpha=alpha,
         max_iterations=max_iterations,
         time_limit=time_limit,
-        seed=seed
+        seed=seed,
+        return_stats=True
     )
+    
+    # Garantir que stats nunca seja None
+    if stats is None:
+        stats = {}
+    
+    return clique, size, time_exec, stats
 
 
 # Função factory para criar algoritmos

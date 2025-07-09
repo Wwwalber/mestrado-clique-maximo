@@ -508,7 +508,8 @@ def solve_maximum_clique_grasp(graph: nx.Graph,
                               max_iterations: int = 1000,
                               time_limit: float = 300.0,
                               max_no_improvement: int = 100,
-                              seed: Optional[int] = None) -> Tuple[List[int], int, float]:
+                              seed: Optional[int] = None,
+                              return_stats: bool = False) -> Tuple[List[int], int, float, Optional[Dict]]:
     """
     Interface principal para resolver o problema do clique máximo com GRASP.
     
@@ -519,9 +520,11 @@ def solve_maximum_clique_grasp(graph: nx.Graph,
         time_limit: Limite de tempo em segundos
         max_no_improvement: Máximo de iterações sem melhoria
         seed: Semente aleatória para reprodutibilidade
+        return_stats: Se True, retorna estatísticas incluindo timeout_estimate
         
     Returns:
-        Tupla (clique, tamanho, tempo_execução)
+        Tupla (clique, tamanho, tempo_execução, stats_dict)
+        stats_dict contém timeout_estimate se aplicável
     """
     params = GRASPParameters(
         alpha=alpha,
@@ -532,7 +535,24 @@ def solve_maximum_clique_grasp(graph: nx.Graph,
     )
     
     grasp = GRASPMaximumClique(graph, params)
-    return grasp.solve()
+    clique, size, time_exec = grasp.solve()
+    
+    # Coletar estatísticas incluindo timeout_estimate
+    stats = None
+    if return_stats:
+        stats = {
+            'total_iterations': grasp.stats.total_iterations,
+            'improvements_found': grasp.stats.improvements_found,
+            'best_iteration': grasp.stats.best_iteration,
+            'construction_time': grasp.stats.construction_time,
+            'local_search_time': grasp.stats.local_search_time,
+        }
+        
+        # Adicionar timeout_estimate se foi gerada
+        if hasattr(grasp, 'timeout_estimate') and grasp.timeout_estimate is not None:
+            stats['timeout_estimate'] = grasp.timeout_estimate
+    
+    return clique, size, time_exec, stats
 
 
 def compare_grasp_parameters(graph: nx.Graph, 
