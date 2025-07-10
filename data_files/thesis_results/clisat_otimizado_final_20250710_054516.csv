@@ -1,0 +1,38 @@
+Instance,Nodes,Edges,CliSAT_Size,CliSAT_Time,CliSAT_Status,CliSAT_Timeout_Estimate,CliSAT_Timeout_Method
+C125.9,125,6963,32,600.225814,COMPLETED,56400.12704992294,Baseado na taxa de exploração de nós da árvore de busca
+C250.9,250,27984,37,600.102824,COMPLETED,128400.07270574571,Baseado na taxa de exploração de nós da árvore de busca
+C500.9,500,112332,43,600.208628,COMPLETED,274802.649415493,Baseado na taxa de exploração de nós da árvore de busca
+C1000.9,1000,450079,51,601.161992,COMPLETED,570003.4728884697,Baseado na taxa de exploração de nós da árvore de busca
+C2000.9,2000,1799532,0,0.0,ERROR: 'estimated_total_time',ERROR,ERROR
+DSJC1000_5,1000,249826,13,600.442345,COMPLETED,592800.301984787,Baseado na taxa de exploração de nós da árvore de busca
+DSJC500_5,500,62624,12,600.176599,COMPLETED,293400.42600774765,Baseado na taxa de exploração de nós da árvore de busca
+C2000.5,2000,999836,13,601.776586,COMPLETED,1192800.8157129288,Baseado na taxa de exploração de nós da árvore de busca
+C4000.5,4000,4000268,0,0.0,ERROR: 'estimated_total_time',ERROR,ERROR
+MANN_a27,378,70551,125,600.138848,COMPLETED,152402.4769563675,Baseado na taxa de exploração de nós da árvore de busca
+MANN_a45,1035,533115,342,602.619812,COMPLETED,416569.353178978,Baseado na taxa de exploração de nós da árvore de busca
+MANN_a81,3321,5506380,0,0.0,ERROR: 'estimated_total_time',ERROR,ERROR
+brock200_2,200,9876,0,0.0,ERROR: 'NoneType' object has no attribute 'get',ERROR,ERROR
+brock200_4,200,13089,0,0.0,ERROR: 'NoneType' object has no attribute 'get',ERROR,ERROR
+brock400_2,400,59786,20,600.120421,COMPLETED,228600.13516616818,Baseado na taxa de exploração de nós da árvore de busca
+brock400_4,400,59765,20,600.10603,COMPLETED,228600.35135936737,Baseado na taxa de exploração de nós da árvore de busca
+brock800_2,800,208166,16,600.304722,COMPLETED,471000.3350138664,Baseado na taxa de exploração de nós da árvore de busca
+brock800_4,800,207643,16,600.296338,COMPLETED,471000.13887166977,Baseado na taxa de exploração de nós da árvore de busca
+gen200_p0.9_44,200,17910,34,600.067677,COMPLETED,100200.12741088867,Baseado na taxa de exploração de nós da árvore de busca
+gen200_p0.9_55,200,17910,38,600.063906,COMPLETED,97800.07729697227,Baseado na taxa de exploração de nós da árvore de busca
+gen400_p0.9_55,400,71820,44,600.120005,COMPLETED,214200.5204808712,Baseado na taxa de exploração de nós da árvore de busca
+gen400_p0.9_65,400,71820,40,600.110858,COMPLETED,216600.20200419426,Baseado na taxa de exploração de nós da árvore de busca
+gen400_p0.9_75,400,71820,45,600.133745,COMPLETED,213600.6993865967,Baseado na taxa de exploração de nós da árvore de busca
+hamming10-4,1024,434176,32,600.692315,COMPLETED,595802.2223689556,Baseado na taxa de exploração de nós da árvore de busca
+hamming8-4,256,20864,0,0.0,ERROR: 'NoneType' object has no attribute 'get',ERROR,ERROR
+keller4,171,9435,0,0.0,ERROR: 'NoneType' object has no attribute 'get',ERROR,ERROR
+keller5,776,225990,17,600.369895,COMPLETED,456000.9764766693,Baseado na taxa de exploração de nós da árvore de busca
+keller6,3361,4619898,0,0.0,ERROR: 'estimated_total_time',ERROR,ERROR
+p_hat300-1,300,10933,0,0.0,ERROR: 'NoneType' object has no attribute 'get',ERROR,ERROR
+p_hat300-2,300,21928,0,0.0,ERROR: 'NoneType' object has no attribute 'get',ERROR,ERROR
+p_hat300-3,300,33390,32,600.132529,COMPLETED,161401.97707724574,Baseado na taxa de exploração de nós da árvore de busca
+p_hat700-1,700,60999,0,0.0,ERROR: 'NoneType' object has no attribute 'get',ERROR,ERROR
+p_hat700-2,700,121728,42,600.243075,COMPLETED,395401.1739845276,Baseado na taxa de exploração de nós da árvore de busca
+p_hat700-3,700,183010,57,600.373938,COMPLETED,386402.70417404175,Baseado na taxa de exploração de nós da árvore de busca
+p_hat1500-1,1500,284923,10,600.572159,COMPLETED,894600.7031435968,Baseado na taxa de exploração de nós da árvore de busca
+p_hat1500-2,1500,568960,54,601.072524,COMPLETED,868202.1989769936,Baseado na taxa de exploração de nós da árvore de busca
+p_hat1500-3,1500,847244,75,601.67637,COMPLETED,855614.6173105239,Baseado na taxa de exploração de nós da árvore de busca

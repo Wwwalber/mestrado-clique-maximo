@@ -12,7 +12,7 @@ from typing import Optional
 @dataclass
 class CliSATParams:
     """Parâmetros para o algoritmo CliSAT."""
-    time_limit: float = 3600.0          # Limite de tempo em segundos (1 hora)
+    time_limit: float = 600.0           # Limite de tempo em segundos (10 minutos) - OTIMIZADO PARA 11H
     log_interval: int = 1000            # Intervalo para logs (nós processados)
     time_interval: float = 30.0         # Intervalo de tempo para logs (segundos)
     monitor_mode: str = 'log'           # Modo de monitoramento
@@ -32,7 +32,7 @@ class GRASPParams:
     """Parâmetros para o algoritmo GRASP."""
     alpha: float = 0.3                  # Parâmetro de aleatoriedade (0=guloso, 1=aleatório)
     max_iterations: int = 1000          # Número máximo de iterações
-    time_limit: float = 300.0           # Limite de tempo em segundos (5 min)
+    time_limit: float = 180.0           # Limite de tempo em segundos (3 min) - OTIMIZADO PARA 11H
     max_no_improvement: int = 100       # Máximo de iterações sem melhoria
     local_search_intensity: int = 3     # Intensidade da busca local
     seed: Optional[int] = None          # Semente para reprodutibilidade
