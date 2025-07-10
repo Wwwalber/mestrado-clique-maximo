@@ -1,0 +1,12 @@
+Instance,Nodes,Edges,CliSAT_Size,CliSAT_Time,CliSAT_Status,CliSAT_Timeout_Estimate,CliSAT_Timeout_Method
+C2000.9,2000,1799532,56,1320.004311,COMPLETED_RERUN,inf,Dados insuficientes para estimativa
+C4000.5,4000,4000268,12,3136.069948,COMPLETED_RERUN,inf,Dados insuficientes para estimativa
+MANN_a81,3321,5506380,1096,8627.178289,COMPLETED_RERUN,inf,Dados insuficientes para estimativa
+brock200_2,200,9876,11,7.332652,COMPLETED_RERUN,N/A,No timeout (rerun)
+brock200_4,200,13089,17,169.669399,COMPLETED_RERUN,N/A,No timeout (rerun)
+hamming8-4,256,20864,16,68.662268,COMPLETED_RERUN,N/A,No timeout (rerun)
+keller4,171,9435,11,29.046887,COMPLETED_RERUN,N/A,No timeout (rerun)
+keller6,3361,4619898,37,5527.653233,COMPLETED_RERUN,inf,Dados insuficientes para estimativa
+p_hat300-1,300,10933,7,1.57286,COMPLETED_RERUN,N/A,No timeout (rerun)
+p_hat300-2,300,21928,25,79.083214,COMPLETED_RERUN,N/A,No timeout (rerun)
+p_hat700-1,700,60999,11,28.115967,COMPLETED_RERUN,N/A,No timeout (rerun)
