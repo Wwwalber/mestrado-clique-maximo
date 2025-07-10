@@ -5,11 +5,13 @@
 O sistema foi finalizado com **apenas 2 abordagens** para o problema do clique máximo, conforme solicitado:
 
 ### 1. CliSAT (Algoritmo Exato)
-- **Arquivo**: `src/clisat_algortithmb.py`
+- **Arquivo**: `algorithms/clisat_exact.py`
 - **Função**: `solve_maximum_clique_clisat(graph, time_limit)`
-- **Tipo**: Algoritmo exato baseado em SAT
+- **Tipo**: Algoritmo exato branch-and-bound com técnicas SAT
 - **Características**:
   - Garante solução ótima
+  - Implementa técnicas modernas: ISEQ, SATCOL, Filter Phase, COLOR-SORT
+  - Baseado no paper "CliSAT: A new exact algorithm for hard maximum clique problems"
   - Adequado para instâncias pequenas/médias
   - Tempo de execução pode ser exponencial
 

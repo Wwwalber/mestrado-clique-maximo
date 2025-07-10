@@ -54,9 +54,13 @@ class TimeoutEstimator:
         
         if nodes_explored == 0 or current_time == 0:
             return {
-                'estimated_time': float('inf'),
-                'explanation': 'Dados insuficientes para estimativa',
-                'calculation_method': 'N/A'
+                'estimated_total_time': float('inf'),
+                'estimated_remaining_time': float('inf'),
+                'current_time': current_time,
+                'exploration_rate': 0,
+                'nodes_explored': nodes_explored,
+                'calculation_method': 'Dados insuficientes para estimativa',
+                'explanation': 'Dados insuficientes para estimativa'
             }
         
         # Taxa de exploração (nós por segundo)
@@ -117,9 +121,14 @@ class TimeoutEstimator:
         """
         if iteration == 0 or current_time == 0:
             return {
-                'estimated_time': float('inf'),
-                'explanation': 'Dados insuficientes para estimativa',
-                'calculation_method': 'N/A'
+                'estimated_total_time': float('inf'),
+                'estimated_remaining_time': float('inf'),
+                'current_time': current_time,
+                'iteration_rate': 0,
+                'remaining_iterations': max_iterations,
+                'progress_percentage': 0,
+                'calculation_method': 'Dados insuficientes para estimativa',
+                'explanation': 'Dados insuficientes para estimativa'
             }
         
         # Taxa de progresso (iterações por segundo)
