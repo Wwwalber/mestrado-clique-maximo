@@ -1,0 +1,52 @@
+RELATÓRIO DE COMPARAÇÃO - CliSAT vs REFERÊNCIAS
+=======================================================
+
+ESTATÍSTICAS GERAIS:
+- Instâncias comparadas: 35
+- Instâncias completadas: 25
+- Ratio médio: 79.1%
+- Melhor resultado: 99.2%
+- Pior resultado: 60.0%
+
+RESULTADOS EXCELENTES (≥98%):
+- MANN_a27: 125/126 (99.2%)
+- MANN_a45: 342/345 (99.1%)
+
+RESULTADOS BONS (80-97%):
+- p_hat700-2: 42/44 (95.5%)
+- C125.9: 32/34 (94.1%)
+- DSJC500_5: 12/13 (92.3%)
+- p_hat700-3: 57/62 (91.9%)
+- p_hat300-3: 32/36 (88.9%)
+- DSJC1000_5: 13/15 (86.7%)
+- C250.9: 37/44 (84.1%)
+- p_hat1500-1: 10/12 (83.3%)
+- p_hat1500-2: 54/65 (83.1%)
+- gen400_p0.9_55: 44/55 (80.0%)
+- hamming10-4: 32/40 (80.0%)
+
+RESULTADOS QUE PRECISAM MELHORIA (<80%):
+- p_hat1500-3: 75/94 (79.8%)
+- gen200_p0.9_44: 34/44 (77.3%)
+- C500.9: 43/57 (75.4%)
+- C1000.9: 51/68 (75.0%)
+- gen200_p0.9_55: 38/55 (69.1%)
+- brock400_2: 20/29 (69.0%)
+- brock800_2: 16/24 (66.7%)
+- keller5: 17/27 (63.0%)
+- brock800_4: 16/26 (61.5%)
+- gen400_p0.9_65: 40/65 (61.5%)
+- brock400_4: 20/33 (60.6%)
+- gen400_p0.9_75: 45/75 (60.0%)
+
+INSTÂNCIAS COM FALHA:
+- C2000.9: esperado 80
+- MANN_a81: esperado 1100
+- brock200_2: esperado 12
+- brock200_4: esperado 17
+- hamming8-4: esperado 16
+- keller4: esperado 11
+- keller6: esperado 59
+- p_hat300-1: esperado 8
+- p_hat300-2: esperado 25
+- p_hat700-1: esperado 11
