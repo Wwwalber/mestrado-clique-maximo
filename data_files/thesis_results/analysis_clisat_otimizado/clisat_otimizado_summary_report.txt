@@ -1,0 +1,37 @@
+RELATÓRIO DE ANÁLISE - CliSAT OTIMIZADO
+==================================================
+
+Total de instâncias processadas: 37
+Instâncias completadas com sucesso: 26
+Taxa de sucesso: 70.3%
+
+ESTATÍSTICAS DOS SUCESSOS:
+- Tempo médio: 600.51s
+- Tamanho médio do clique: 48.5
+- Maior clique encontrado: 342
+- Menor tempo de execução: 600.06s
+
+TOP 10 MAIORES CLIQUES:
+ 1. MANN_a45        - Clique: 342, Tempo: 602.62s, Nós: 1035
+ 2. MANN_a27        - Clique: 125, Tempo: 600.14s, Nós:  378
+ 3. p_hat1500-3     - Clique:  75, Tempo: 601.68s, Nós: 1500
+ 4. p_hat700-3      - Clique:  57, Tempo: 600.37s, Nós:  700
+ 5. p_hat1500-2     - Clique:  54, Tempo: 601.07s, Nós: 1500
+ 6. C1000.9         - Clique:  51, Tempo: 601.16s, Nós: 1000
+ 7. gen400_p0.9_75  - Clique:  45, Tempo: 600.13s, Nós:  400
+ 8. gen400_p0.9_55  - Clique:  44, Tempo: 600.12s, Nós:  400
+ 9. C500.9          - Clique:  43, Tempo: 600.21s, Nós:  500
+10. p_hat700-2      - Clique:  42, Tempo: 600.24s, Nós:  700
+
+INSTÂNCIAS COM ERRO (11):
+- C2000.9         (2000 nós): ERROR: 'estimated_total_time'
+- C4000.5         (4000 nós): ERROR: 'estimated_total_time'
+- MANN_a81        (3321 nós): ERROR: 'estimated_total_time'
+- brock200_2      ( 200 nós): ERROR: 'NoneType' object has no attribute 'get'
+- brock200_4      ( 200 nós): ERROR: 'NoneType' object has no attribute 'get'
+- hamming8-4      ( 256 nós): ERROR: 'NoneType' object has no attribute 'get'
+- keller4         ( 171 nós): ERROR: 'NoneType' object has no attribute 'get'
+- keller6         (3361 nós): ERROR: 'estimated_total_time'
+- p_hat300-1      ( 300 nós): ERROR: 'NoneType' object has no attribute 'get'
+- p_hat300-2      ( 300 nós): ERROR: 'NoneType' object has no attribute 'get'
+- p_hat700-1      ( 700 nós): ERROR: 'NoneType' object has no attribute 'get'

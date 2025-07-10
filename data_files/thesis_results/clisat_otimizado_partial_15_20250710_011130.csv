@@ -1,0 +1,16 @@
+Instance,Nodes,Edges,CliSAT_Size,CliSAT_Time,CliSAT_Status,CliSAT_Timeout_Estimate,CliSAT_Timeout_Method
+C125.9,125,6963,32,600.225814,COMPLETED,56400.12704992294,Baseado na taxa de exploração de nós da árvore de busca
+C250.9,250,27984,37,600.102824,COMPLETED,128400.07270574571,Baseado na taxa de exploração de nós da árvore de busca
+C500.9,500,112332,43,600.208628,COMPLETED,274802.649415493,Baseado na taxa de exploração de nós da árvore de busca
+C1000.9,1000,450079,51,601.161992,COMPLETED,570003.4728884697,Baseado na taxa de exploração de nós da árvore de busca
+C2000.9,2000,1799532,0,0.0,ERROR: 'estimated_total_time',ERROR,ERROR
+DSJC1000_5,1000,249826,13,600.442345,COMPLETED,592800.301984787,Baseado na taxa de exploração de nós da árvore de busca
+DSJC500_5,500,62624,12,600.176599,COMPLETED,293400.42600774765,Baseado na taxa de exploração de nós da árvore de busca
+C2000.5,2000,999836,13,601.776586,COMPLETED,1192800.8157129288,Baseado na taxa de exploração de nós da árvore de busca
+C4000.5,4000,4000268,0,0.0,ERROR: 'estimated_total_time',ERROR,ERROR
+MANN_a27,378,70551,125,600.138848,COMPLETED,152402.4769563675,Baseado na taxa de exploração de nós da árvore de busca
+MANN_a45,1035,533115,342,602.619812,COMPLETED,416569.353178978,Baseado na taxa de exploração de nós da árvore de busca
+MANN_a81,3321,5506380,0,0.0,ERROR: 'estimated_total_time',ERROR,ERROR
+brock200_2,200,9876,0,0.0,ERROR: 'NoneType' object has no attribute 'get',ERROR,ERROR
+brock200_4,200,13089,0,0.0,ERROR: 'NoneType' object has no attribute 'get',ERROR,ERROR
+brock400_2,400,59786,20,600.120421,COMPLETED,228600.13516616818,Baseado na taxa de exploração de nós da árvore de busca

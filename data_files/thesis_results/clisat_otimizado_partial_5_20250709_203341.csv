@@ -1,0 +1,6 @@
+Instance,Nodes,Edges,CliSAT_Size,CliSAT_Time,CliSAT_Status,CliSAT_Timeout_Estimate,CliSAT_Timeout_Method
+C125.9,125,6963,32,600.225814,COMPLETED,56400.12704992294,Baseado na taxa de exploração de nós da árvore de busca
+C250.9,250,27984,37,600.102824,COMPLETED,128400.07270574571,Baseado na taxa de exploração de nós da árvore de busca
+C500.9,500,112332,43,600.208628,COMPLETED,274802.649415493,Baseado na taxa de exploração de nós da árvore de busca
+C1000.9,1000,450079,51,601.161992,COMPLETED,570003.4728884697,Baseado na taxa de exploração de nós da árvore de busca
+C2000.9,2000,1799532,0,0.0,ERROR: 'estimated_total_time',ERROR,ERROR
